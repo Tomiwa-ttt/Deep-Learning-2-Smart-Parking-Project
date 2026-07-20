@@ -1,0 +1,4 @@
+Dataset: ./real_dataset
+Epochs run: 1
+Final val accuracy: 97.04%
+Final val loss: 0.0977

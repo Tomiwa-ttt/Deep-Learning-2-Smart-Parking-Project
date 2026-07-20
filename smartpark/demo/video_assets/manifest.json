@@ -1,0 +1,29 @@
+[
+  {
+    "lot_name": "2013-01-29_20_16_22",
+    "total": 28,
+    "empty": 8,
+    "occupied": 20,
+    "correct": 24,
+    "raw_path": "demo/video_assets/lot0_raw.jpg",
+    "annotated_path": "demo/video_assets/lot0_annotated.jpg"
+  },
+  {
+    "lot_name": "2013-04-09_17_55_13",
+    "total": 40,
+    "empty": 8,
+    "occupied": 32,
+    "correct": 40,
+    "raw_path": "demo/video_assets/lot1_raw.jpg",
+    "annotated_path": "demo/video_assets/lot1_annotated.jpg"
+  },
+  {
+    "lot_name": "2012-12-20_14_40_09",
+    "total": 28,
+    "empty": 1,
+    "occupied": 27,
+    "correct": 26,
+    "raw_path": "demo/video_assets/lot2_raw.jpg",
+    "annotated_path": "demo/video_assets/lot2_annotated.jpg"
+  }
+]

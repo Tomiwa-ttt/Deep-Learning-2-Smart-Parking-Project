@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CampusPark Live</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --asphalt-950: #14161a;
+    --asphalt-900: #1b1e24;
+    --asphalt-800: #24282f;
+    --asphalt-700: #333842;
+    --line-white: #f4f3ef;
+    --stall-green: #4fae6d;
+    --stall-green-dim: #2e5c3d;
+    --stall-amber: #e0a338;
+    --stall-amber-dim: #6b5423;
+    --stall-red: #e0523a;
+    --stall-red-dim: #6b2c22;
+    --muted: #8b909c;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: transparent;
+    font-family: 'DM Mono', monospace;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 24px 12px;
+  }
+
+  .phone {
+    width: 360px;
+    background: var(--asphalt-950);
+    border-radius: 40px;
+    border: 10px solid #0a0b0d;
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.03);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .notch {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 22px;
+    background: #0a0b0d;
+    border-radius: 14px;
+    z-index: 10;
+  }
+
+  .screen {
+    padding: 46px 18px 22px;
+    min-height: 640px;
+    background:
+      radial-gradient(ellipse at top, rgba(224,163,56,0.06), transparent 55%),
+      var(--asphalt-950);
+    color: var(--line-white);
+  }
+
+  /* ---- Header ---- */
+  .app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 6px;
+  }
+
+  .app-title {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--stall-green);
+    box-shadow: 0 0 0 0 rgba(79,174,109,0.6);
+    animation: pulse 1.8s infinite;
+  }
+
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(79,174,109,0.55); }
+    70%  { box-shadow: 0 0 0 8px rgba(79,174,109,0); }
+    100% { box-shadow: 0 0 0 0 rgba(79,174,109,0); }
+  }
+
+  .timestamp {
+    font-size: 10px;
+    color: var(--muted);
+    text-align: right;
+    line-height: 1.4;
+  }
+
+  .lot-name {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 18px;
+    letter-spacing: 0.3px;
+  }
+  .lot-name b { color: var(--line-white); font-weight: 500; }
+
+  /* ---- Stat strip, styled like a stenciled sign ---- */
+  .stat-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border: 1px solid var(--asphalt-700);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .stat {
+    padding: 12px 6px;
+    text-align: center;
+    border-right: 1px solid var(--asphalt-700);
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Oswald', sans-serif;
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .stat.empty .stat-num { color: var(--stall-green); }
+  .stat.occupied .stat-num { color: var(--line-white); }
+  .stat.bad .stat-num { color: var(--stall-red); }
+
+  /* ---- Stall grid, mirrors the physical 2-row x 5-col layout ---- */
+  .lot-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .lot-label-row span {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+  }
+
+  .stall-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+
+  .stall {
+    aspect-ratio: 0.62;
+    border-radius: 6px;
+    border: 2px solid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.15s ease;
+    font-family: 'Oswald', sans-serif;
+  }
+  .stall:active { transform: scale(0.94); }
+
+  .stall.empty {
+    background: var(--asphalt-900);
+    border-color: var(--stall-green-dim);
+    color: var(--stall-green);
+  }
+  .stall.occupied {
+    background: var(--asphalt-800);
+    border-color: var(--stall-amber-dim);
+    color: var(--stall-amber);
+  }
+  .stall.bad {
+    background: var(--asphalt-800);
+    border-color: var(--stall-red);
+    color: var(--stall-red);
+    animation: flag 2s infinite;
+  }
+  @keyframes flag {
+    0%, 100% { border-color: var(--stall-red); }
+    50% { border-color: var(--stall-red-dim); }
+  }
+
+  .stall-id {
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .stall-icon {
+    font-size: 15px;
+    margin-top: 2px;
+  }
+
+  /* ---- Selected spot detail ---- */
+  .detail-card {
+    background: var(--asphalt-900);
+    border: 1px solid var(--asphalt-700);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+    min-height: 64px;
+  }
+  .detail-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .detail-body {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .detail-body .hl { color: var(--line-white); }
+
+  /* ---- Controls ---- */
+  .controls {
+    display: flex;
+    gap: 8px;
+  }
+  button.action {
+    flex: 1;
+    background: var(--stall-amber);
+    color: var(--asphalt-950);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 0;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    cursor: pointer;
+  }
+  button.action:active { opacity: 0.8; }
+  button.secondary {
+    background: transparent;
+    border: 1px solid var(--asphalt-700);
+    color: var(--muted);
+  }
+
+  .legend {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    margin-top: 16px;
+    font-size: 9px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .legend span { display: flex; align-items: center; gap: 5px; }
+  .swatch { width: 8px; height: 8px; border-radius: 2px; }
+  .swatch.g { background: var(--stall-green); }
+  .swatch.a { background: var(--stall-amber); }
+  .swatch.r { background: var(--stall-red); }
+
+  .footer-note {
+    text-align: center;
+    font-size: 8.5px;
+    color: #565b66;
+    margin-top: 14px;
+    letter-spacing: 0.3px;
+  }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="notch"></div>
+  <div class="screen">
+
+    <div class="app-header">
+      <div class="app-title"><span class="live-dot"></span>CampusPark</div>
+      <div class="timestamp" id="timestamp">Updated<br/>just now</div>
+    </div>
+    <div class="lot-name">Faculty Lot A &middot; <b id="lotIdLabel">lot_0000</b></div>
+
+    <div class="stat-strip">
+      <div class="stat empty"><div class="stat-num" id="statEmpty">-</div><div class="stat-label">Empty</div></div>
+      <div class="stat occupied"><div class="stat-num" id="statOccupied">-</div><div class="stat-label">Occupied</div></div>
+      <div class="stat bad"><div class="stat-num" id="statBad">-</div><div class="stat-label">Bad Park</div></div>
+    </div>
+
+    <div class="lot-label-row"><span>Live stall map</span><span id="totalLabel">10 stalls</span></div>
+    <div class="stall-grid" id="stallGrid"></div>
+
+    <div class="detail-card" id="detailCard">
+      <div class="detail-title">Tap a stall</div>
+      <div class="detail-body">See live status, model confidence, and why a spot was flagged.</div>
+    </div>
+
+    <div class="controls">
+      <button class="action" id="refreshBtn">↻ Refresh feed</button>
+      <button class="action secondary" id="nextLotBtn">Next lot</button>
+    </div>
+
+    <div class="legend">
+      <span><i class="swatch g"></i>Empty</span>
+      <span><i class="swatch a"></i>Occupied</span>
+      <span><i class="swatch r"></i>Bad park</span>
+    </div>
+
+    <div class="footer-note">CNN spot classifier + OpenCV boundary check &middot; demo build</div>
+  </div>
+</div>
+
+<script>
+// Real output captured from the trained CNN + geometry pipeline
+// (models/cnn_model.py + inference.py) across several synthetic lots.
+const SAMPLE_RESULTS = __SAMPLE_RESULTS__;
+
+const lotIds = Object.keys(SAMPLE_RESULTS);
+let lotIndex = 0;
+
+const stallGrid = document.getElementById('stallGrid');
+const detailCard = document.getElementById('detailCard');
+const timestampEl = document.getElementById('timestamp');
+const lotIdLabel = document.getElementById('lotIdLabel');
+const totalLabel = document.getElementById('totalLabel');
+
+function iconFor(spot) {
+  if (!spot.occupied) return '—';
+  if (spot.properly_parked) return '🚗';
+  return '⚠';
+}
+
+function classFor(spot) {
+  if (!spot.occupied) return 'empty';
+  if (spot.properly_parked) return 'occupied';
+  return 'bad';
+}
+
+function render(lotId) {
+  const results = SAMPLE_RESULTS[lotId];
+  lotIdLabel.textContent = lotId;
+  totalLabel.textContent = results.length + ' stalls';
+
+  const nEmpty = results.filter(r => !r.occupied).length;
+  const nBad = results.filter(r => r.occupied && !r.properly_parked).length;
+  const nOcc = results.length - nEmpty;
+
+  document.getElementById('statEmpty').textContent = nEmpty;
+  document.getElementById('statOccupied').textContent = nOcc;
+  document.getElementById('statBad').textContent = nBad;
+
+  stallGrid.innerHTML = '';
+  results.forEach(spot => {
+    const el = document.createElement('div');
+    el.className = 'stall ' + classFor(spot);
+    el.innerHTML = `<div class="stall-id">${spot.spot_id}</div><div class="stall-icon">${iconFor(spot)}</div>`;
+    el.addEventListener('click', () => showDetail(spot));
+    stallGrid.appendChild(el);
+  });
+
+  timestampEl.innerHTML = 'Updated<br/>just now';
+  detailCard.innerHTML = `<div class="detail-title">Tap a stall</div>
+    <div class="detail-body">See live status, model confidence, and why a spot was flagged.</div>`;
+}
+
+function showDetail(spot) {
+  const conf = (spot.confidence * 100).toFixed(1);
+  let statusLine;
+  if (!spot.occupied) {
+    statusLine = `<span class="hl">Empty</span> &middot; ${conf}% confidence`;
+  } else if (spot.properly_parked) {
+    statusLine = `<span class="hl">Occupied, properly parked</span> &middot; ${conf}% confidence`;
+  } else {
+    statusLine = `<span class="hl">Occupied, improperly parked</span> &middot; ${conf}% confidence`;
+  }
+  detailCard.innerHTML = `<div class="detail-title">Stall ${spot.spot_id}</div>
+    <div class="detail-body">${statusLine}<br/>${spot.reason}</div>`;
+}
+
+document.getElementById('refreshBtn').addEventListener('click', () => {
+  timestampEl.innerHTML = 'Updating<br/>...';
+  setTimeout(() => render(lotIds[lotIndex]), 450);
+});
+
+document.getElementById('nextLotBtn').addEventListener('click', () => {
+  lotIndex = (lotIndex + 1) % lotIds.length;
+  render(lotIds[lotIndex]);
+});
+
+render(lotIds[lotIndex]);
+</script>
+
+</body>
+</html>

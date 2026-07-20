@@ -1,0 +1,19 @@
+digraph architecture {
+  rankdir=TB;
+  bgcolor="transparent";
+  node [fontname="Helvetica" fontsize=13 shape=box style="rounded,filled" fillcolor="#24282f" fontcolor="#f4f3ef" color="#4a5058" penwidth=1.5 margin=0.18];
+  edge [fontname="Helvetica" fontsize=11 color="#8b909c" fontcolor="#5a5f68" penwidth=1.3];
+
+  camera [label="Lot Photo\n(camera / dataset)" fillcolor="#333842"];
+  crop [label="Per-Spot\nCrop (OpenCV)"];
+  cnn [label="CNN\nClassifier" fillcolor="#4fae6d" fontcolor="#14161a"];
+  geom [label="Geometry Check\n(IoU vs. marked spot)"];
+  api [label="REST API\n(Flask)" fillcolor="#e0a338" fontcolor="#14161a"];
+  app [label="Mobile App\n(CampusPark UI)" fillcolor="#333842"];
+
+  camera -> crop -> cnn;
+  cnn -> geom [label="  if occupied"];
+  cnn -> api;
+  geom -> api;
+  api -> app;
+}

@@ -1,0 +1,132 @@
+[
+  {
+    "spot_id": 0,
+    "bbox": [
+      20,
+      20,
+      100,
+      160
+    ],
+    "occupied": true,
+    "confidence": 0.9876008629798889,
+    "properly_parked": true,
+    "reason": "Within spot boundary"
+  },
+  {
+    "spot_id": 1,
+    "bbox": [
+      100,
+      20,
+      180,
+      160
+    ],
+    "occupied": false,
+    "confidence": 0.7971982955932617,
+    "properly_parked": null,
+    "reason": "Spot is empty"
+  },
+  {
+    "spot_id": 2,
+    "bbox": [
+      180,
+      20,
+      260,
+      160
+    ],
+    "occupied": true,
+    "confidence": 0.6043220162391663,
+    "properly_parked": true,
+    "reason": "Within spot boundary"
+  },
+  {
+    "spot_id": 3,
+    "bbox": [
+      260,
+      20,
+      340,
+      160
+    ],
+    "occupied": true,
+    "confidence": 0.9998883605003357,
+    "properly_parked": true,
+    "reason": "Within spot boundary"
+  },
+  {
+    "spot_id": 4,
+    "bbox": [
+      340,
+      20,
+      420,
+      160
+    ],
+    "occupied": false,
+    "confidence": 0.7941982746124268,
+    "properly_parked": null,
+    "reason": "Spot is empty"
+  },
+  {
+    "spot_id": 5,
+    "bbox": [
+      20,
+      160,
+      100,
+      300
+    ],
+    "occupied": true,
+    "confidence": 0.941330075263977,
+    "properly_parked": false,
+    "reason": "Car extends outside its spot (IoU=0.38, overflow=25%)"
+  },
+  {
+    "spot_id": 6,
+    "bbox": [
+      100,
+      160,
+      180,
+      300
+    ],
+    "occupied": false,
+    "confidence": 0.7972383499145508,
+    "properly_parked": null,
+    "reason": "Spot is empty"
+  },
+  {
+    "spot_id": 7,
+    "bbox": [
+      180,
+      160,
+      260,
+      300
+    ],
+    "occupied": false,
+    "confidence": 0.7968213558197021,
+    "properly_parked": null,
+    "reason": "Spot is empty"
+  },
+  {
+    "spot_id": 8,
+    "bbox": [
+      260,
+      160,
+      340,
+      300
+    ],
+    "occupied": true,
+    "confidence": 0.9989500045776367,
+    "properly_parked": true,
+    "reason": "Within spot boundary"
+  },
+  {
+    "spot_id": 9,
+    "bbox": [
+      340,
+      160,
+      420,
+      300
+    ],
+    "occupied": true,
+    "confidence": 0.9990125298500061,
+    "properly_parked": true,
+    "reason": "Within spot boundary"
+  }
+]

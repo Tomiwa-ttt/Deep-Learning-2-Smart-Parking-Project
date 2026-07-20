@@ -1,0 +1,4 @@
+Dataset: ./synthetic_dataset
+Epochs run: 9
+Final val accuracy: 97.50%
+Final val loss: 0.0886
