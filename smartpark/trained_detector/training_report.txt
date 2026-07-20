@@ -1,0 +1,6 @@
+Dataset: ./synthetic_dataset
+Images: 300 (train 255 / val 45)
+Ground-truth boxes: 4422 (12 dropped to grid-cell collisions, 0.3%)
+Epochs run: 40
+Final train loss: 0.9495
+Final val loss: 2.6469

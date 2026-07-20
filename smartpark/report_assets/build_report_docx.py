@@ -1,0 +1,459 @@
+"""
+build_report_docx.py
+
+Builds the final project report (SmartPark_Report.docx) from the real
+numbers produced by train_detector.py, evaluate_detector.py,
+hyperparameter_ablation.py, and benchmark_baseline.py -- run those first
+(see README / report Section 5-7 for exact commands) if you need to
+regenerate the underlying numbers.
+
+Usage:
+    cd smartpark
+    python report_assets/build_report_docx.py
+"""
+
+import os
+from docx import Document
+from docx.shared import Inches, Pt, RGBColor
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.table import WD_TABLE_ALIGNMENT
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+CHARTS = os.path.join(HERE, "charts")
+SAMPLES = os.path.join(HERE, "sample_outputs")
+
+ACCENT = RGBColor(0x3B, 0x5B, 0xFD)
+DARK = RGBColor(0x18, 0x18, 0x1B)
+
+
+def add_heading(doc, text, level=1):
+    h = doc.add_heading(text, level=level)
+    for run in h.runs:
+        run.font.color.rgb = DARK
+    return h
+
+
+def add_picture_captioned(doc, path, caption, width=5.5):
+    doc.add_picture(path, width=Inches(width))
+    doc.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p = doc.add_paragraph(caption)
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p.runs[0].italic = True
+    p.runs[0].font.size = Pt(9)
+
+
+def add_table(doc, headers, rows, widths=None):
+    table = doc.add_table(rows=1, cols=len(headers))
+    table.style = "Light Grid Accent 1"
+    table.alignment = WD_TABLE_ALIGNMENT.CENTER
+    hdr = table.rows[0].cells
+    for i, h in enumerate(headers):
+        hdr[i].text = h
+        for p in hdr[i].paragraphs:
+            for r in p.runs:
+                r.bold = True
+    for row in rows:
+        cells = table.add_row().cells
+        for i, val in enumerate(row):
+            cells[i].text = str(val)
+    return table
+
+
+def build():
+    doc = Document()
+    style = doc.styles["Normal"]
+    style.font.name = "Calibri"
+    style.font.size = Pt(11)
+
+    # ---- Title page ----
+    title = doc.add_paragraph()
+    title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    run = title.add_run("SmartPark: Real-Time Parking Spot Object Detection")
+    run.bold = True
+    run.font.size = Pt(26)
+    run.font.color.rgb = ACCENT
+
+    sub = doc.add_paragraph()
+    sub.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r2 = sub.add_run("AASD 4014 — Deep Learning II — Final Project Report\nObject Detection Track")
+    r2.font.size = Pt(14)
+
+    meta = doc.add_paragraph()
+    meta.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    meta.add_run("Group Number: [FILL IN]\nJuly 2026").font.size = Pt(12)
+    doc.add_page_break()
+
+    # ---- Placeholder notice ----
+    add_heading(doc, "Before Submitting", level=2)
+    p = doc.add_paragraph()
+    p.add_run(
+        "This report was drafted by working through the assignment rubric section by section. "
+        "Fields marked [FILL IN] need real information from your group before submission: group number, "
+        "member names/roles in the Task Distribution and Team Contributions tables, and the Project "
+        "Manager's name. The Agile Development section (below) reconstructs the actual build sequence from "
+        "the project's real file history as a starting point -- replace or supplement it with your team's "
+        "actual meeting notes, Jira board, and burndown chart if you tracked one separately."
+    ).italic = True
+
+    # ---- Task distribution table (required at start of report) ----
+    add_heading(doc, "Task Distribution", level=1)
+    doc.add_paragraph("Filled in per the assignment's Workload Distribution requirement. Redundant tasks "
+                       "(e.g. more than one member touching model training) are acceptable if documented here.")
+    add_table(doc, ["Name", "Role", "Tasks"], [
+        ["[FILL IN — Project Manager]", "Project Manager", "Coordination, timeline, final report assembly"],
+        ["[FILL IN]", "[FILL IN]", "[FILL IN]"],
+        ["[FILL IN]", "[FILL IN]", "[FILL IN]"],
+        ["[FILL IN]", "[FILL IN]", "[FILL IN]"],
+        ["[FILL IN]", "[FILL IN]", "[FILL IN]"],
+    ])
+    doc.add_page_break()
+
+    # ---- 1. Background and Problem Statement ----
+    add_heading(doc, "1. Background and Problem Statement", level=1)
+    doc.add_paragraph(
+        "Drivers regularly spend significant time searching for available parking in cities, malls, airports, "
+        "and campuses -- circling lots because there is no way to see spot-level availability before arriving. "
+        "Camera-based occupancy detection is a natural fit for computer vision, and has an established research "
+        "line (PKLot, CNRPark-EXT) built around classifying individually marked spots as Empty or Occupied."
+    )
+    doc.add_paragraph(
+        "This project targets the assignment's Object Detection track directly: rather than only classifying "
+        "pre-cropped, pre-calibrated spot images (a common simplification in the PKLot/CNRPark-EXT literature), "
+        "the core deliverable is a trained object detector that finds and classifies parking spots as one of "
+        "two distinct object classes -- \"empty_spot\" and \"occupied_spot\" -- directly in a full, uncalibrated "
+        "photo of a lot. A second, complementary pipeline (a per-spot CNN classifier plus a geometric "
+        "misparking check) is kept for cameras where spot boundaries are already known, since it additionally "
+        "flags cars that are parked across a spot boundary -- something the detector alone does not attempt."
+    )
+
+    # ---- 2. Plan of Attack ----
+    add_heading(doc, "2. Plan of Attack", level=1)
+    doc.add_paragraph(
+        "The approach was staged deliberately so that a working end-to-end system existed at every step, "
+        "rather than betting everything on one long training run:"
+    )
+    for item in [
+        "Stand up the full pipeline (data → model → API → UI) on a cheap, procedurally generated "
+        "synthetic dataset first, to validate every moving part before spending time on real-world data cleanup.",
+        "Layer in real-world data (PKLot) for the occupancy classifier to confirm the approach generalizes "
+        "beyond synthetic images.",
+        "Audit the finished project against the course rubric before finalizing the report -- this caught "
+        "that a pre-cropped classifier alone does not satisfy an \"Object Detection\" deliverable (Section 8 "
+        "discusses this pivot and why).",
+        "Redesign the core model as a genuine from-scratch object detector over two classes, with real "
+        "training/validation metrics, hyperparameter ablations, and a baseline comparison, then wire it into "
+        "the same live API and demo UI.",
+    ]:
+        doc.add_paragraph(item, style="List Bullet")
+
+    # ---- Agile Development ----
+    add_heading(doc, "Agile Development Process", level=1)
+    doc.add_paragraph(
+        "Development was organized into four stages, reconstructed here from the project's actual file "
+        "history (each stage corresponds to a real day of work on the repository, 2026-07-17 through "
+        "2026-07-20). Replace this with your team's real sprint/meeting records if you tracked them "
+        "separately (e.g. in Jira)."
+    )
+    add_table(doc, ["Sprint", "Dates", "Goal", "Key deliverables"], [
+        ["Sprint 1", "Jul 17", "Pipeline scaffolding", "Synthetic data generator, CNN classifier, geometry "
+         "misparking checker, inference pipeline, first demo UI -- validated end-to-end on synthetic data"],
+        ["Sprint 2", "Jul 18", "Real-data integration", "PKLot COCO→crop conversion script, resumable "
+         "training script, classifier retrained on real PKLot data (97.04% val accuracy)"],
+        ["Sprint 3", "Jul 19", "Reporting", "Initial report/slide drafts, architecture diagram, demo screenshots"],
+        ["Sprint 4", "Jul 20", "Environment fixes + OD pivot", "Fixed Python/TensorFlow/Keras version-skew "
+         "issues, then rebuilt the core deliverable as a real 2-class object detector: training, evaluation "
+         "(precision/recall/AP/mAP), hyperparameter ablations, baseline benchmarking, live API integration"],
+    ])
+    add_picture_captioned(doc, os.path.join(CHARTS, "burndown.png"),
+                           "Figure: stage-level burndown (reconstructed backlog view, not a literal daily Jira log).")
+
+    doc.add_page_break()
+
+    # ---- 3. The Dataset ----
+    add_heading(doc, "3. The Dataset", level=1)
+    add_heading(doc, "3.1 Object Detection Dataset (primary deliverable)", level=2)
+    doc.add_paragraph(
+        "A procedurally generated synthetic dataset (data/generate_synthetic_data.py) provides full, "
+        "uncropped parking-lot images with COCO-style bounding-box annotations for two classes: "
+        "\"empty_spot\" (the marked, unoccupied space) and \"occupied_spot\" (the parked car's actual "
+        "footprint, which shifts for intentionally misparked cases -- this is what makes the task genuine "
+        "localization rather than fixed-position lookup). Each generated lot uses a randomized grid layout "
+        "(2-3 rows, 4-8 columns, randomized spot size/margin, plus small per-spot jitter), so spot positions "
+        "vary across images."
+    )
+    add_table(doc, ["Metric", "Value"], [
+        ["Full lot images", "300"],
+        ["Labeled spot instances", "4,422"],
+        ["empty_spot instances", "2,027"],
+        ["occupied_spot instances", "2,395"],
+        ["Improperly parked (subset of occupied)", "542"],
+        ["Train / validation split", "255 images / 45 images (85% / 15%)"],
+    ])
+    doc.add_paragraph(
+        "Both classes clear the assignment's 200-images-per-class minimum by a wide margin, and (per the "
+        "assignment's allowance) do not need to co-occur in every image, though in this dataset almost every "
+        "lot naturally contains both."
+    )
+
+    add_heading(doc, "3.2 Occupancy Classifier Dataset (secondary pipeline)", level=2)
+    doc.add_paragraph(
+        "The per-spot CNN classifier was trained on 600 cropped 64×64 spot patches (330 occupied / 270 "
+        "empty) from an earlier, smaller synthetic run for a fast sanity check (97.5% validation accuracy), "
+        "then separately retrained on real data: a COCO-format PKLot export via Roboflow (1,242 real lot "
+        "photographs, 70,684 individually labeled real parking spaces), converted to 36,584 empty / 34,100 "
+        "occupied 64×64 crops via convert_coco_to_crops.py, reaching 97.04% validation accuracy -- "
+        "consistent with published PKLot/CNRPark-EXT results."
+    )
+    p = doc.add_paragraph()
+    p.add_run(
+        "Environment note: that specific real-data model checkpoint was trained in an earlier session and "
+        "is not currently loadable after a TensorFlow/Keras version upgrade in this environment; the raw "
+        "PKLot source images are also no longer present locally to redo the run today. The 97.04% figure is "
+        "the genuine, previously-recorded result (see trained_model_real/training_report.txt), reported here "
+        "as a historical result rather than something re-verified in this session."
+    ).italic = True
+
+    doc.add_page_break()
+
+    # ---- 4. Model Description ----
+    add_heading(doc, "4. Model Description", level=1)
+    add_heading(doc, "4.1 Object Detector (primary deliverable)", level=2)
+    doc.add_paragraph(
+        "A single-shot, grid-based detector trained from scratch (models/detector_model.py), in the style of "
+        "YOLOv1: one predicted box per grid cell, over a 16×16 grid on a 256×256 input. For each cell "
+        "the network predicts an objectness score, a box (center offset within the cell + width/height as a "
+        "fraction of the image), and class probabilities over the two classes."
+    )
+    add_table(doc, ["Layer", "Output"], [
+        ["Input", "256×256×3"],
+        ["Conv2D(16) + MaxPool", "128×128×16"],
+        ["Conv2D(32) + MaxPool", "64×64×32"],
+        ["Conv2D(64) + MaxPool", "32×32×64"],
+        ["Conv2D(128) + MaxPool", "16×16×128"],
+        ["Conv2D(128) × 2", "16×16×128"],
+        ["Conv2D(7, 1×1) head", "16×16×7  (objectness, tx, ty, tw, th, class0, class1)"],
+    ])
+    doc.add_paragraph("Total parameters: 393,511. Post-processing: per-class Non-Max Suppression "
+                       "(cv2.dnn.NMSBoxes) removes duplicate overlapping detections.")
+
+    add_heading(doc, "4.2 Occupancy Classifier + Geometry Check (secondary pipeline)", level=2)
+    doc.add_paragraph(
+        "A small CNN (models/cnn_model.py, 1,142,081 parameters: three Conv+MaxPool blocks, a dense head with "
+        "dropout, sigmoid output) classifies a pre-cropped 64×64 spot patch as Empty or Occupied. For "
+        "occupied spots, a classic-CV step (color-distance thresholding, inference.find_car_bbox_in_spot) "
+        "localizes the car within the spot and an IoU/overflow check (improper_parking.py) flags cars parked "
+        "across the marked boundary. A MobileNetV2 transfer-learning variant (models/cnn_model.py:"
+        "build_mobilenet_transfer) is also implemented as an available alternative backbone but was not "
+        "needed in practice -- the small custom CNN already reached 97%+ accuracy at a fraction of the "
+        "inference cost."
+    )
+    add_picture_captioned(doc, os.path.join(HERE, "architecture_v2.png"),
+                           "Figure: system architecture -- both pipelines share the same REST API and demo UI.")
+
+    doc.add_page_break()
+
+    # ---- 5. Training & Evaluation ----
+    add_heading(doc, "5. Training & Evaluation", level=1)
+    doc.add_paragraph(
+        "The detector was trained for 40 epochs (Adam, lr=1e-3 with ReduceLROnPlateau, batch size 16, "
+        "EarlyStopping patience 6 on val_loss with best-weights restore -- did not trigger early, ran the "
+        "full 40 epochs). Loss follows the YOLOv1 formulation: squared-error coordinate loss (weighted 5×), "
+        "objectness loss, a down-weighted (0.5×) no-object loss, and classification loss, applied only to "
+        "grid cells that contain a ground-truth object (except no-object loss, applied everywhere)."
+    )
+    add_picture_captioned(doc, os.path.join(CHARTS, "training_curve.png"), "Figure: training/validation loss per epoch.")
+    doc.add_paragraph("Final train loss: 0.95. Final (best-restored) validation loss: 2.65.")
+
+    doc.add_paragraph(
+        "Evaluated on the held-out 45-image validation split (721 spot instances: 337 empty_spot, 384 "
+        "occupied_spot) by decoding predictions back to image coordinates, applying NMS, and matching against "
+        "ground truth at IoU ≥ 0.5:"
+    )
+    add_table(doc, ["Class", "GT instances", "AP@0.5", "Precision", "Recall", "F1"], [
+        ["empty_spot", "337", "98.73%", "95.5%", "94.1%", "94.8%"],
+        ["occupied_spot", "384", "98.68%", "99.7%", "96.1%", "97.9%"],
+        ["mAP@0.5", "—", "98.71%", "—", "—", "—"],
+    ])
+    add_picture_captioned(doc, os.path.join(CHARTS, "pr_curves.png"), "Figure: precision-recall curves per class.")
+    add_picture_captioned(doc, os.path.join(CHARTS, "ap_bar.png"), "Figure: AP per class and mAP@0.5.")
+
+    doc.add_paragraph(
+        "To separate localization error from classification error, a second confusion matrix restricts to "
+        "boxes that were correctly localized (IoU ≥ 0.5, matched irrespective of predicted class) and asks "
+        "whether the predicted class was right:"
+    )
+    add_picture_captioned(doc, os.path.join(CHARTS, "confusion_matrix.png"),
+                           "Figure: confusion matrix, localized boxes only. 335/335 empty_spot and 379/380 "
+                           "occupied_spot correctly classified -- 99.86% classification accuracy given correct "
+                           "localization. Almost all remaining error is missed detections (recall), not class confusion.")
+
+    add_heading(doc, "Qualitative results", level=2)
+    doc.add_paragraph(
+        "Eight held-out validation images with predicted vs. ground-truth counts (full list: "
+        "report_assets/sample_outputs/summary.json):"
+    )
+    add_table(doc, ["Sample", "GT (empty / occupied)", "Predicted (empty / occupied)"], [
+        ["sample_01.jpg", "11 / 10", "11 / 10  (exact match)"],
+        ["sample_03.jpg", "10 / 14", "10 / 14  (exact match)"],
+        ["sample_06.jpg", "6 / 6", "1 / 4  (missed several cars -- see discussion)"],
+    ])
+    for fname, cap in [
+        ("sample_01.jpg", "Figure: exact match -- 21/21 spots correctly detected and classified."),
+        ("sample_06.jpg", "Figure: a genuine failure case -- several spots (including a low-contrast gray car) "
+                          "were missed entirely; discussed in Section 8."),
+    ]:
+        add_picture_captioned(doc, os.path.join(SAMPLES, fname), cap, width=5.0)
+
+    doc.add_page_break()
+
+    # ---- 6. Hyperparameter Tuning ----
+    add_heading(doc, "6. Hyperparameter Tuning", level=1)
+    doc.add_paragraph(
+        "Two hyperparameters were tuned with real, measured comparisons rather than left at arbitrary defaults."
+    )
+    add_heading(doc, "6.1 Grid resolution", level=2)
+    doc.add_paragraph(
+        "The one-box-per-cell design means two spot centers landing in the same grid cell causes one "
+        "ground-truth box to be dropped during training. Measuring this collision rate across grid "
+        "resolutions on the full dataset:"
+    )
+    add_table(doc, ["Grid size", "Dropped boxes", "Collision rate"], [
+        ["8×8", "111 / 4,422", "2.51%"],
+        ["16×16 (used)", "12 / 4,422", "0.27%"],
+        ["32×32", "3 / 4,422", "0.07%"],
+    ])
+    doc.add_paragraph(
+        "16×16 was chosen as the balance point: it cuts collisions by roughly 9× versus 8×8 while "
+        "keeping the head 4× cheaper than 32×32 for a collision rate that is already well under 1%."
+    )
+
+    add_heading(doc, "6.2 Coordinate loss weight (lambda_coord)", level=2)
+    doc.add_paragraph(
+        "YOLOv1 weights the box-coordinate loss 5× relative to the classification/objectness terms, to "
+        "keep the localization signal from being drowned out by the much larger number of no-object cells. "
+        "This was tested directly: two otherwise-identical detectors were trained for a matched, short "
+        "budget (15 epochs) with lambda_coord=5.0 vs. lambda_coord=1.0:"
+    )
+    add_table(doc, ["lambda_coord", "Val loss (15 epochs)", "mAP@0.5"], [
+        ["5.0 (used)", "3.91", "96.72%"],
+        ["1.0", "16.36", "0.00%"],
+    ])
+    doc.add_paragraph(
+        "At lambda_coord=1.0 the model collapsed to predicting no confident objects anywhere within the "
+        "15-epoch budget (mAP=0%) -- a well-known YOLO training pathology when the coordinate signal is "
+        "underweighted relative to the flood of no-object cells. This concretely confirms the YOLOv1 default "
+        "was the right choice for this setup, rather than assuming it."
+    )
+
+    doc.add_page_break()
+
+    # ---- 7. Benchmarking ----
+    add_heading(doc, "7. Benchmarking", level=1)
+    doc.add_paragraph(
+        "The trained detector's per-spot classification accuracy was compared against two non-learned "
+        "baselines, using the same validation ground-truth spot locations for all three so the comparison "
+        "isolates classification quality from localization ability:"
+    )
+    add_table(doc, ["Method", "Accuracy"], [
+        ["Majority-class baseline (always predict \"occupied\")", "53.26%"],
+        ["Classic-CV heuristic (this project's original color-distance detector, "
+         "inference.find_car_bbox_in_spot)", "82.66%"],
+        ["Trained detector (classification given correct localization)", "99.86%"],
+    ])
+    doc.add_paragraph(
+        "The classic-CV heuristic was this project's own first approach to occupancy (used for the "
+        "\"properly parked\" geometry check before any detector existed) -- it beats a naive prior "
+        "substantially but still misses roughly 1 in 6 spots, which is exactly the kind of gap a learned "
+        "model is expected to close, and the trained detector closes nearly all of it."
+    )
+    doc.add_paragraph(
+        "The occupancy classifier's real-data result (97.04% on PKLot) is also independently consistent with "
+        "accuracy levels reported in the original PKLot and CNRPark-EXT research papers for the same "
+        "per-spot classification task, which is an external benchmark beyond this project's own baselines."
+    )
+
+    doc.add_page_break()
+
+    # ---- 8. Discussion & Reflection ----
+    add_heading(doc, "8. Discussion & Reflection", level=1)
+    add_heading(doc, "What worked", level=2)
+    doc.add_paragraph(
+        "Staging the build around a synthetic dataset first paid off twice: it let the whole pipeline "
+        "(data → model → API → UI) be validated cheaply before touching real data, and later, when the "
+        "project needed to become a genuine object detector, the same generator only needed real position "
+        "variance and COCO-style annotations added -- no new infrastructure. The detector reached 98.71% mAP "
+        "and, per the confusion matrix, almost never confuses the two classes when it does localize a spot."
+    )
+    add_heading(doc, "What didn't work / had to be revisited", level=2)
+    for item in [
+        "The first version of this project (per-spot CNN classifier applied to pre-cropped, pre-calibrated "
+        "images) does not actually satisfy an Object Detection deliverable -- it assumes spot locations are "
+        "already known and never localizes anything itself. This was only caught by explicitly auditing the "
+        "finished project against the course rubric, not during initial development. The fix (Sprint 4) was "
+        "a genuine architecture change, not a relabeling: a real detector trained from scratch on two object "
+        "classes, evaluated with detection metrics (AP/mAP), not classification accuracy alone.",
+        "Sample_06 (Section 5) shows the detector missing several real spots in one validation image, "
+        "including a low-contrast gray car -- a similar failure mode to the one already documented in the "
+        "classic-CV heuristic (which also struggles with cars close in color to the asphalt/lines). This "
+        "suggests the remaining error is concentrated in genuinely low-contrast cases rather than being "
+        "randomly distributed, and would be the first thing to target with more training data or contrast "
+        "augmentation.",
+        "The lambda_coord=1.0 ablation collapsing to 0% mAP was a useful, if initially alarming, result -- "
+        "it's a concrete demonstration of a known YOLO failure mode rather than a bug, and losing an "
+        "afternoon to debugging \"why is validation mAP exactly zero\" before recognizing the pattern was a "
+        "real part of this project's timeline.",
+        "The original \"properly parked\" geometry check and its classic-CV car-localization step were "
+        "validated only on synthetic data; real photos (shadows, lighting, dense packing) are documented as "
+        "an open limitation rather than glossed over.",
+    ]:
+        doc.add_paragraph(item, style="List Bullet")
+
+    add_heading(doc, "What we'd do differently", level=2)
+    for item in [
+        "Audit the project against the grading rubric before building anything, not after -- it would have "
+        "avoided building an entire classifier-only pipeline that needed to be substantially reworked.",
+        "Keep the raw PKLot COCO annotations (not just the derived crops) so the object detector could also "
+        "be validated on real photos, not only synthetic ones -- this is the most important next step before "
+        "treating the detector's real-world performance as proven.",
+        "Add image augmentation (random brightness/contrast, slight rotation) during detector training to "
+        "target the low-contrast miss pattern identified above.",
+    ]:
+        doc.add_paragraph(item, style="List Bullet")
+
+    doc.add_page_break()
+
+    # ---- 9. Conclusion ----
+    add_heading(doc, "9. Conclusion", level=1)
+    doc.add_paragraph(
+        "This project delivers a working object detector, trained from scratch, that finds and classifies "
+        "parking spots as \"empty_spot\" or \"occupied_spot\" directly in full, uncalibrated lot photos, "
+        "reaching 98.71% mAP@0.5 on held-out synthetic validation data -- clearing a majority-class baseline "
+        "(53.3%) and this project's own earlier classic-CV heuristic (82.7%) by a wide margin. A second, "
+        "complementary pipeline (occupancy classifier + geometric misparking check), separately validated on "
+        "real PKLot photographs at 97.04% accuracy in an earlier session, remains available for cameras with "
+        "known, calibrated spot boundaries. Both are served live through a Flask REST API and a browser demo "
+        "that accepts an uploaded photo of any parking lot. The main open item before treating this as "
+        "production-ready is validating the detector itself (not just the classifier) against real, "
+        "non-synthetic photographs."
+    )
+
+    doc.add_page_break()
+
+    # ---- 10. Team Contributions ----
+    add_heading(doc, "10. Team Contributions", level=1)
+    doc.add_paragraph("[FILL IN — replace with each member's actual contribution before submission]")
+    add_table(doc, ["Name", "Contribution"], [
+        ["[FILL IN — Project Manager]", "[FILL IN]"],
+        ["[FILL IN]", "[FILL IN]"],
+        ["[FILL IN]", "[FILL IN]"],
+        ["[FILL IN]", "[FILL IN]"],
+        ["[FILL IN]", "[FILL IN]"],
+    ])
+
+    out_path = os.path.join(HERE, "SmartPark_Report.docx")
+    doc.save(out_path)
+    print(f"Saved {out_path}")
+
+
+if __name__ == "__main__":
+    build()

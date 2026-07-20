@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ParkCheck</title>
+<style>
+  :root {
+    --bg: #f6f6f7;
+    --surface: #ffffff;
+    --border: #e4e4e7;
+    --text: #18181b;
+    --muted: #71717a;
+    --accent: #2f3542;
+    --accent-2: #3b5bfd;
+    --empty: #16a34a;
+    --occupied: #d97706;
+    --bad: #dc2626;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 48px 20px 80px;
+  }
+  header { margin-bottom: 32px; }
+  header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
+  }
+  header p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+  .dropzone {
+    border: 1.5px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 36px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+  }
+  .dropzone:hover, .dropzone.drag {
+    border-color: var(--accent-2);
+    background: #fafbff;
+  }
+  .dropzone .icon {
+    width: 36px;
+    height: 36px;
+    margin: 0 auto 12px;
+    color: var(--muted);
+  }
+  .dropzone p { margin: 0; font-size: 14px; color: var(--muted); }
+  .dropzone .browse { color: var(--accent-2); font-weight: 500; }
+  input[type="file"] { display: none; }
+
+  .samples { margin-top: 20px; }
+  .samples .label {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-bottom: 8px;
+  }
+  .sample-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .sample-thumb {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    background: #eee;
+    padding: 0;
+  }
+  .sample-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .sample-thumb:hover { border-color: var(--accent-2); }
+
+  .status-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 16px;
+  }
+  .spinner {
+    width: 14px; height: 14px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent-2);
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .error {
+    margin-top: 16px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+    font-size: 13px;
+  }
+
+  .results { margin-top: 24px; display: none; }
+  .results img.annotated {
+    width: 100%;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    display: block;
+  }
+  .summary {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 16px 0 4px;
+  }
+  .chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dot.empty { background: var(--empty); }
+  .dot.occupied { background: var(--occupied); }
+  .dot.bad { background: var(--bad); }
+
+  .verdict {
+    margin-top: 16px;
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .verdict .title { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+  .verdict .sub { font-size: 13px; color: var(--muted); }
+
+  .spot-list {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--muted);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 6px;
+  }
+  .spot-list .spot {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 0;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>ParkCheck</h1>
+      <p>Upload any parking lot photo — an object detector finds and classifies every spot directly, no calibration needed.</p>
+    </header>
+
+    <div class="card">
+      <div class="dropzone" id="dropzone">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 16V4M12 4l-4 4M12 4l4 4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <p>Drop a photo here, or <span class="browse">browse</span></p>
+      </div>
+      <input type="file" id="fileInput" accept="image/*">
+
+      <div class="samples">
+        <div class="label">Or try a calibrated sample lot (adds properly/improperly-parked check)</div>
+        <div class="sample-row" id="sampleRow"></div>
+      </div>
+
+      <div class="status-line" id="statusLine" style="display:none">
+        <div class="spinner"></div>
+        <span>Analyzing…</span>
+      </div>
+      <div class="error" id="errorBox" style="display:none"></div>
+    </div>
+
+    <div class="results card" id="results">
+      <img class="annotated" id="annotatedImg" alt="Annotated result">
+      <div class="summary" id="summary"></div>
+      <div id="verdictBox"></div>
+      <div class="spot-list" id="spotList"></div>
+    </div>
+  </div>
+
+<script>
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('fileInput');
+const statusLine = document.getElementById('statusLine');
+const errorBox = document.getElementById('errorBox');
+const results = document.getElementById('results');
+const annotatedImg = document.getElementById('annotatedImg');
+const summary = document.getElementById('summary');
+const verdictBox = document.getElementById('verdictBox');
+const spotList = document.getElementById('spotList');
+const sampleRow = document.getElementById('sampleRow');
+
+dropzone.addEventListener('click', () => fileInput.click());
+dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag'));
+dropzone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropzone.classList.remove('drag');
+  if (e.dataTransfer.files.length) analyzeFile(e.dataTransfer.files[0]);
+});
+fileInput.addEventListener('change', () => {
+  if (fileInput.files.length) analyzeFile(fileInput.files[0]);
+});
+
+function setLoading(on) {
+  statusLine.style.display = on ? 'flex' : 'none';
+}
+function setError(msg) {
+  if (!msg) { errorBox.style.display = 'none'; return; }
+  errorBox.textContent = msg;
+  errorBox.style.display = 'block';
+}
+
+async function analyzeFile(file) {
+  setError(null);
+  results.style.display = 'none';
+  setLoading(true);
+  try {
+    const form = new FormData();
+    form.append('image', file, file.name);
+    const res = await fetch('/api/analyze', { method: 'POST', body: form });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Analysis failed');
+    render(data);
+  } catch (err) {
+    setError(err.message || 'Something went wrong reaching the server.');
+  } finally {
+    setLoading(false);
+  }
+}
+
+async function analyzeSample(lotId) {
+  setError(null);
+  results.style.display = 'none';
+  setLoading(true);
+  try {
+    const res = await fetch(`/api/lots/${lotId}/status`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Analysis failed');
+    data.mode = 'multi_spot';
+    render(data);
+  } catch (err) {
+    setError(err.message || 'Something went wrong reaching the server.');
+  } finally {
+    setLoading(false);
+  }
+}
+
+function render(data) {
+  annotatedImg.src = data.annotated_image;
+  verdictBox.innerHTML = '';
+
+  if (data.mode === 'detector') {
+    summary.innerHTML = `
+      <span class="chip"><span class="dot empty"></span>${data.empty_spots} empty</span>
+      <span class="chip"><span class="dot occupied"></span>${data.occupied_spots} occupied</span>
+      <span class="chip">${data.total_spots} spots detected</span>
+    `;
+    spotList.innerHTML = data.detections
+      .slice().sort((a, b) => a.bbox[0] - b.bbox[0])
+      .map((d, i) => {
+        const dot = d.class_name === 'empty_spot' ? 'empty' : 'occupied';
+        const label = d.class_name === 'empty_spot' ? 'Empty' : 'Occupied';
+        return `<div class="spot"><span class="dot ${dot}"></span>#${i + 1} ${label} (${Math.round(d.confidence * 100)}%)</div>`;
+      }).join('');
+  } else {
+    summary.innerHTML = `
+      <span class="chip"><span class="dot empty"></span>${data.empty_spots} empty</span>
+      <span class="chip"><span class="dot occupied"></span>${data.occupied_spots} occupied</span>
+      <span class="chip"><span class="dot bad"></span>${data.improperly_parked} improperly parked</span>
+    `;
+    spotList.innerHTML = data.spots.map(s => {
+      let dot = 'empty', label = `#${s.spot_id} Empty`;
+      if (s.occupied) {
+        dot = s.properly_parked ? 'occupied' : 'bad';
+        label = `#${s.spot_id} ${s.properly_parked ? 'Occupied' : 'Bad park'}`;
+      }
+      return `<div class="spot"><span class="dot ${dot}"></span>${label}</div>`;
+    }).join('');
+  }
+
+  results.style.display = 'block';
+}
+
+async function loadSamples() {
+  try {
+    const res = await fetch('/api/lots');
+    const data = await res.json();
+    const ids = (data.lots || []).slice(0, 6);
+    sampleRow.innerHTML = ids.map(id => `
+      <button class="sample-thumb" data-id="${id}">
+        <img src="/api/lots/${id}/image" alt="${id}">
+      </button>
+    `).join('');
+    sampleRow.querySelectorAll('.sample-thumb').forEach(btn => {
+      btn.addEventListener('click', () => analyzeSample(btn.dataset.id));
+    });
+  } catch (err) {
+    // sample gallery is a convenience, not critical -- fail quietly
+  }
+}
+
+loadSamples();
+</script>
+</body>
+</html>
