@@ -304,6 +304,43 @@ def build():
     ]:
         add_picture_captioned(doc, os.path.join(SAMPLES, fname), cap, width=5.0)
 
+    add_heading(doc, "5.1 Real-Photo Generalization Test (Qualitative)", level=2)
+    doc.add_paragraph(
+        "The detector above is trained only on synthetic data. To honestly check how it behaves outside "
+        "that distribution, it was run on 115 real, full-scene photographs from CNRPark-EXT (real_photo_test.py "
+        "streams a small partial download of the public CNR-EXT_FULL_IMAGE_1000x750 release -- no full 450MB "
+        "archive needed, just enough bytes to extract several dozen complete JPEGs). CNRPark-EXT is a "
+        "meaningfully different domain from this project's synthetic data: a steep angled real camera, no "
+        "painted spot boundary lines, natural lighting, shadows, and background clutter (trees, other "
+        "vehicles in transit, signage)."
+    )
+    doc.add_paragraph(
+        "No ground truth is available for these particular images (CNRPark-EXT's public release ships labels "
+        "for pre-cropped patches, not bounding boxes for the full-scene images), so this is a qualitative "
+        "check, not a quantitative mAP figure -- and it is a materially different, harder question than "
+        "Section 3.2's real-data classifier result, which only had to classify a pre-cropped, pre-located "
+        "spot, not find one from scratch in a completely unfamiliar layout."
+    )
+    add_picture_captioned(doc, os.path.join(HERE, "real_photo_test", "example_1.jpg"),
+                           "Figure: real CNRPark-EXT photo, detector output. Boxes loosely cluster around real "
+                           "cars, but several vehicles are missed and box shapes are imprecise (some are "
+                           "unnaturally tall/narrow).", width=5.0)
+    add_picture_captioned(doc, os.path.join(HERE, "real_photo_test", "example_2.jpg"),
+                           "Figure: a busier real lot -- only 4 large, imprecise boxes for dozens of visible "
+                           "cars. Every detection here was classified occupied_spot; empty_spot essentially "
+                           "never fires on these photos, since there are no painted empty bays for it to "
+                           "recognize in this camera's view.", width=5.0)
+    doc.add_paragraph(
+        "Takeaway: the detector carries over a coarse \"there is a cluster of cars roughly here\" signal, "
+        "but not reliable per-spot localization or the empty_spot concept, in a domain this different from "
+        "training. This is consistent with (and about as severe as) this project's own earlier finding for "
+        "the classifier pipeline: a 5-image pilot test on CNRPark-EXT scored only 2/5 (40%) despite 97%+ "
+        "accuracy on PKLot. The common thread across both pipelines is that this project's real-data "
+        "validation (PKLot) and its cross-domain test (CNRPark-EXT) are two different camera setups with "
+        "different marking conventions -- neither pipeline has yet been trained on data resembling "
+        "CNRPark-EXT specifically."
+    )
+
     doc.add_page_break()
 
     # ---- 6. Hyperparameter Tuning ----
@@ -405,6 +442,12 @@ def build():
         "The original \"properly parked\" geometry check and its classic-CV car-localization step were "
         "validated only on synthetic data; real photos (shadows, lighting, dense packing) are documented as "
         "an open limitation rather than glossed over.",
+        "The real-photo generalization test (Section 5.1) confirmed a genuine domain gap rather than "
+        "assuming one existed: on real CNRPark-EXT photos (a steeper camera angle, no painted lines) the "
+        "detector finds a rough cluster of real cars but misses most vehicles and never recognizes an "
+        "empty_spot. This mirrors this project's own earlier 40% cross-domain result for the classifier "
+        "pipeline on the same dataset -- a consistent signal that PKLot-style training data does not "
+        "automatically transfer to a differently-marked, differently-angled real lot.",
     ]:
         doc.add_paragraph(item, style="List Bullet")
 
@@ -417,6 +460,10 @@ def build():
         "treating the detector's real-world performance as proven.",
         "Add image augmentation (random brightness/contrast, slight rotation) during detector training to "
         "target the low-contrast miss pattern identified above.",
+        "Fine-tune (not just synthetically train) the detector on real photos from the target deployment "
+        "camera(s) before trusting it there -- the CNRPark-EXT test shows the coarse \"cars roughly here\" "
+        "signal transfers, but precise per-spot localization and the empty_spot class do not, without "
+        "seeing that camera's actual layout during training.",
     ]:
         doc.add_paragraph(item, style="List Bullet")
 
@@ -432,9 +479,11 @@ def build():
         "complementary pipeline (occupancy classifier + geometric misparking check), separately validated on "
         "real PKLot photographs at 97.04% accuracy in an earlier session, remains available for cameras with "
         "known, calibrated spot boundaries. Both are served live through a Flask REST API and a browser demo "
-        "that accepts an uploaded photo of any parking lot. The main open item before treating this as "
-        "production-ready is validating the detector itself (not just the classifier) against real, "
-        "non-synthetic photographs."
+        "that accepts an uploaded photo of any parking lot. A qualitative test on 115 real CNRPark-EXT photos "
+        "(Section 5.1) shows the detector carries over a coarse signal to real images but does not yet "
+        "generalize precisely to a camera angle and marking style it has never seen -- fine-tuning on photos "
+        "from the actual target camera(s) is the clear next step before production deployment, not an "
+        "unexamined unknown."
     )
 
     doc.add_page_break()

@@ -267,6 +267,18 @@ def build():
     add_title(s, "Live Demo", "Flask REST API + browser upload UI — no install needed")
     add_picture_fit(s, os.path.join(HERE, "live_demo_detection.jpg"), Inches(2.8), Inches(1.8), Inches(7.7), Inches(5.2))
 
+    # 13b. Real-photo generalization test
+    s = blank_slide(prs)
+    add_title(s, "Real-Photo Generalization Test", "Qualitative — trained only on synthetic data, run on real CNRPark-EXT photos")
+    add_picture_fit(s, os.path.join(HERE, "real_photo_test", "example_2.jpg"), Inches(1.2), Inches(1.8), Inches(6.6), Inches(5.0))
+    add_bullets(s, Inches(8.1), Inches(2.0), Inches(4.6), Inches(4.5), [
+        "115 real photos tested, no painted lines, steep real camera angle",
+        "Boxes loosely cluster near real cars — some transferable signal",
+        "Misses most vehicles; box shapes imprecise",
+        "empty_spot almost never fires — no painted bays in this domain",
+        "Matches this project's earlier classifier result: 40% on the same cross-domain test",
+    ], size=14)
+
     # 14. Discussion & limitations
     s = blank_slide(prs)
     add_title(s, "Discussion & Limitations", "Honest accounting")
@@ -274,9 +286,9 @@ def build():
         "Worked: staged synthetic-first build let the whole pipeline be validated cheaply before real data",
         "Had to be revisited: the original classifier-only version didn't satisfy Object Detection — only "
         "caught by auditing against the rubric, requiring a genuine architecture change in Sprint 4",
-        "Detector is validated on synthetic data only — real photos (shadows, lighting, dense packing) remain "
-        "the main open validation gap; the classifier's real-PKLot result doesn't cover the detector",
-        "Low-contrast cars (e.g. gray-on-gray) are the concentrated failure mode, in both the new detector "
+        "Tested on real photos (CNRPark-EXT): coarse signal transfers, precise localization does not — a "
+        "real, measured domain gap, not an unexamined unknown",
+        "Low-contrast cars (e.g. gray-on-gray) are a concentrated failure mode, in both the new detector "
         "and the original classic-CV heuristic — the clear next target",
     ], size=17)
 
@@ -287,9 +299,9 @@ def build():
               "A from-scratch object detector for two classes (empty_spot / occupied_spot), 98.71% mAP@0.5, "
               "beating both a majority-class baseline (53.3%) and this project's own earlier classic-CV "
               "heuristic (82.7%). Served live through a REST API and browser demo, alongside a "
-              "real-data-validated occupancy classifier for calibrated cameras. Main next step: validate the "
-              "detector on real, non-synthetic photographs.",
-              size=20, color=FG)
+              "real-data-validated occupancy classifier for calibrated cameras. A real-photo test shows the "
+              "next step clearly: fine-tune on the target camera's actual images before deployment.",
+              size=19, color=FG)
 
     # 16. Team
     s = blank_slide(prs)
