@@ -40,7 +40,7 @@ from detector_utils import decode_predictions, draw_detections, preprocess_image
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MODEL_PATH = os.path.join(BASE_DIR, "trained_model", "parking_spot_cnn.keras")
-DETECTOR_PATH = os.path.join(BASE_DIR, "trained_detector", "spot_detector.keras")
+DETECTOR_PATH = os.path.join(BASE_DIR, "trained_detector_mixed", "spot_detector.keras")
 MANIFEST_PATH = os.path.join(BASE_DIR, "synthetic_dataset", "manifest.json")
 LOTS_DIR = os.path.join(BASE_DIR, "synthetic_dataset", "full_lots")
 DEMO_DIR = os.path.join(BASE_DIR, "demo")

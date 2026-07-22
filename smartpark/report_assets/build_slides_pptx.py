@@ -306,6 +306,29 @@ def build():
     add_title(s, "Real-Data Fine-Tuning — Qualitative", "A dense, cluttered real PKLot photo")
     add_picture_fit(s, os.path.join(SAMPLES_REAL, "sample_06.jpg"), Inches(1.8), Inches(1.7), Inches(9.7), Inches(5.3))
 
+    # 13e. Stress test on uncontrolled photos
+    s = blank_slide(prs)
+    add_title(s, "Stress Test: Uncontrolled Real Photos", "Two Unsplash stock photos — far denser/higher-res than any training data")
+    add_bullets(s, Inches(0.7), Inches(1.9), Inches(11.7), Inches(2.2), [
+        "~150-car dense rooftop lot: only 3 detections. ~30-car numbered garage: only 5.",
+        "Raw objectness scores genuinely low almost everywhere — not a threshold issue",
+        "Tiled inference fixed recall but hallucinated boxes on empty pavement (confused by painted numbers/arrows)",
+    ], size=16)
+    add_picture_fit(s, os.path.join(HERE, "real_photo_test", "before_ivana.jpg"), Inches(3.6), Inches(4.1), Inches(6.0), Inches(3.0))
+
+    # 13f. Fine-tuning strategy comparison
+    s = blank_slide(prs)
+    add_title(s, "Fixing It: Augmentation + Rehearsal", "Three variants, one clear winner")
+    add_picture_fit(s, os.path.join(CHARTS_REAL, "finetuning_comparison.png"), Inches(1.0), Inches(1.7), Inches(11.3), Inches(5.3))
+
+    # 13g. Before/after
+    s = blank_slide(prs)
+    add_title(s, "Before / After", "Same photo, original vs. rehearsal-fine-tuned checkpoint")
+    add_picture_fit(s, os.path.join(HERE, "real_photo_test", "before_ivana.jpg"), Inches(0.4), Inches(1.7), Inches(6.2), Inches(5.3))
+    add_picture_fit(s, os.path.join(HERE, "real_photo_test", "after_ivana.jpg"), Inches(6.9), Inches(1.7), Inches(6.2), Inches(5.3))
+    add_text(s, Inches(0.4), Inches(6.9), Inches(6.2), Inches(0.5), "Before: 3 detections", size=14, color=MUTED, align=PP_ALIGN.CENTER)
+    add_text(s, Inches(6.9), Inches(6.9), Inches(6.2), Inches(0.5), "After (adopted): 17 detections", size=14, color=MUTED, align=PP_ALIGN.CENTER)
+
     # 14. Discussion & limitations
     s = blank_slide(prs)
     add_title(s, "Discussion & Limitations", "Honest accounting")
@@ -313,25 +336,26 @@ def build():
         "Worked: staged synthetic-first build let the whole pipeline be validated cheaply before real data",
         "Had to be revisited: the original classifier-only version didn't satisfy Object Detection — only "
         "caught by auditing against the rubric, requiring a genuine architecture change in Sprint 4",
-        "Zero-shot to an unfamiliar camera (CNRPark-EXT) mostly fails; fine-tuning on same-domain real data "
-        "(PKLot) reaches 47.71% mAP — real data helps a lot, but the model needs to actually see it",
+        "Fine-tuning on real data alone caused catastrophic forgetting (synthetic mAP 98.71%→6.50%) — only "
+        "caught by re-testing on the original validation set; rehearsal (mixing synthetic back in) fixed it",
         "The real-data bottleneck is recall from grid-cell collisions on dense lots, not classification — "
         "a specific, measured next fix, not a vague call for \"more real data\"",
-    ], size=17)
+    ], size=16)
 
     # 15. Conclusion
     s = blank_slide(prs)
     add_title(s, "Conclusion")
-    add_text(s, Inches(0.8), Inches(2.0), Inches(11.7), Inches(4.5),
-              "A from-scratch object detector for two classes (empty_spot / occupied_spot): 98.71% mAP@0.5 "
-              "on synthetic data, and 47.71% mAP@0.5 after fine-tuning on real PKLot photos — beating both a "
-              "majority-class baseline (53.3%) and this project's own earlier classic-CV heuristic (82.7%). "
-              "Classification stays reliable on real data (94.5%, vs. 99.86% synthetic); the real-data gap is "
-              "concentrated in localization recall on dense lots, with a specific, measured cause (grid-cell "
-              "collisions) and a specific next fix (finer grid / anchor-based head). Served live through a "
-              "REST API and browser demo, alongside a real-data-validated occupancy classifier (98.69%) for "
-              "calibrated cameras.",
-              size=17, color=FG)
+    add_text(s, Inches(0.8), Inches(1.9), Inches(11.7), Inches(4.8),
+              "A from-scratch object detector for two classes (empty_spot / occupied_spot). The live "
+              "checkpoint (rehearsal fine-tuned on synthetic + real together): 93.31% mAP@0.5 synthetic, "
+              "51.39% real — beating a majority-class baseline (53.3%) and this project's own classic-CV "
+              "heuristic (82.7%) by a wide margin. Getting here wasn't a straight line: real-only fine-tuning "
+              "generalized poorly to uncontrolled stress-test photos; augmentation fixed that but caused "
+              "catastrophic forgetting; rehearsal recovered synthetic performance while improving real "
+              "performance further — the best result of every variant tried. Served live through a REST API "
+              "and browser demo, alongside a real-data-validated occupancy classifier (98.69%) for calibrated "
+              "cameras.",
+              size=16, color=FG)
 
     # 16. Team
     s = blank_slide(prs)

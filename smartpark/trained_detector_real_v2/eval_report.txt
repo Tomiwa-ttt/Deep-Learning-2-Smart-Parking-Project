@@ -1,0 +1,15 @@
+Validation images: 186
+IoU match threshold: 0.5
+Practical confidence operating point: 0.5
+
+[empty_spot]
+  Ground-truth instances: 5345
+  AP@0.5: 48.57%
+  At confidence>=0.5: precision=79.5%  recall=54.6%  F1=64.8%  (TP=2920 FP=752 FN=2425)
+
+[occupied_spot]
+  Ground-truth instances: 4975
+  AP@0.5: 50.14%
+  At confidence>=0.5: precision=75.2%  recall=56.3%  F1=64.4%  (TP=2803 FP=923 FN=2172)
+
+mAP@0.5: 49.36%

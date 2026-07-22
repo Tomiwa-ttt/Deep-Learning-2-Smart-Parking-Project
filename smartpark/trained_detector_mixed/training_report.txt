@@ -1,0 +1,9 @@
+Synthetic dataset: ./synthetic_dataset
+Real dataset: ./real_pklot_dataset
+Resumed from: ./trained_detector/spot_detector.keras
+Augment crops per real training image: 4
+Train: 5366 (synthetic 255 + real 1056 + augmented 4055)
+Val (combined, for training callbacks only): 231 (synthetic 45 + real 186)
+Epochs run: 25
+Final train loss: 15.6787
+Final combined val loss: 9.3578

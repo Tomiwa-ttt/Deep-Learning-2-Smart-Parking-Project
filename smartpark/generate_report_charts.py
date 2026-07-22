@@ -196,9 +196,10 @@ def plot_burndown(out_path):
     history (see report for how these stage boundaries were derived).
     Not a per-day Jira burndown -- an honest, coarser retrospective view."""
     stages = ["Sprint 1\n(pipeline +\nsynthetic data)", "Sprint 2\n(real-data\nintegration)",
-              "Sprint 3\n(reporting)", "Sprint 4\n(env fixes +\nOD pivot)", "Sprint 5\n(real-data\nclosure)"]
-    planned_total = 10
-    remaining = [10, 7, 5, 1, 0]
+              "Sprint 3\n(reporting)", "Sprint 4\n(env fixes +\nOD pivot)", "Sprint 5\n(real-data\nclosure)",
+              "Sprint 6\n(stress-test +\nrehearsal fix)"]
+    planned_total = 11
+    remaining = [11, 8, 6, 2, 1, 0]
     plt.figure(figsize=(6, 4))
     plt.plot(stages, remaining, marker="o", linewidth=2, color="#3b5bfd")
     plt.fill_between(stages, remaining, alpha=0.15, color="#3b5bfd")

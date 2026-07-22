@@ -21,13 +21,15 @@ import tensorflow as tf
 sys.path.append(os.path.dirname(__file__))
 from models.detector_model import build_detector, INPUT_SIZE, GRID_SIZE, NUM_CLASSES
 from detector_utils import encode_targets, detection_loss
+from augmentation import random_crops
 
 
 def load_dataset(dataset_dir, input_size=INPUT_SIZE, grid_size=GRID_SIZE, num_classes=NUM_CLASSES):
     """Returns a dict with the model-ready arrays (X, Y) plus the raw,
-    un-lossy ground truth (raw_boxes/raw_classes/orig_sizes, one entry per
-    image) so evaluation can score against the true boxes rather than the
-    grid-encoded (and occasionally collision-dropped) targets."""
+    un-lossy ground truth (raw_boxes/raw_classes/orig_sizes/image_paths, one
+    entry per image) so evaluation can score against the true boxes rather
+    than the grid-encoded (and occasionally collision-dropped) targets, and
+    so augmentation can re-crop from the original full-resolution image."""
     with open(os.path.join(dataset_dir, "annotations.json")) as f:
         coco = json.load(f)
 
@@ -37,7 +39,7 @@ def load_dataset(dataset_dir, input_size=INPUT_SIZE, grid_size=GRID_SIZE, num_cl
         anns_by_image.setdefault(ann["image_id"], []).append(ann)
 
     X, Y = [], []
-    raw_boxes, raw_classes, orig_sizes = [], [], []
+    raw_boxes, raw_classes, orig_sizes, image_paths = [], [], [], []
     n_dropped_total = 0
     n_boxes_total = 0
     lots_dir = os.path.join(dataset_dir, "full_lots")
@@ -68,14 +70,44 @@ def load_dataset(dataset_dir, input_size=INPUT_SIZE, grid_size=GRID_SIZE, num_cl
         raw_boxes.append(boxes)
         raw_classes.append(class_ids)
         orig_sizes.append((orig_w, orig_h))
+        image_paths.append(img_path)
 
     X = np.stack(X).astype(np.uint8)
     Y = np.stack(Y).astype(np.float32)
     return {
         "X": X, "Y": Y,
         "raw_boxes": raw_boxes, "raw_classes": raw_classes, "orig_sizes": orig_sizes,
+        "image_paths": image_paths,
         "n_boxes_total": n_boxes_total, "n_dropped_total": n_dropped_total,
     }
+
+
+def build_crop_augmented_set(image_paths, raw_boxes, raw_classes, indices, n_crops=3, seed=42,
+                              input_size=INPUT_SIZE, grid_size=GRID_SIZE, num_classes=NUM_CLASSES):
+    """Generates n_crops random zoomed-in views per image (indices should be
+    the TRAINING split only -- never augment validation data, or the held-out
+    metric stops meaning anything). Re-reads each image at full resolution
+    from disk so crops keep real detail rather than upscaling already-shrunk
+    256x256 arrays."""
+    rng = np.random.RandomState(seed)
+    X_aug, Y_aug = [], []
+    n_generated = 0
+    for i in indices:
+        img = cv2.imread(image_paths[i])
+        if img is None:
+            continue
+        views = random_crops(img, raw_boxes[i], raw_classes[i], rng, n_crops=n_crops)
+        for crop_img, crop_boxes, crop_classes in views:
+            ch, cw = crop_img.shape[:2]
+            target, _ = encode_targets(crop_boxes, crop_classes, cw, ch,
+                                        grid_size=grid_size, input_size=input_size,
+                                        num_classes=num_classes)
+            X_aug.append(cv2.resize(crop_img, (input_size, input_size)))
+            Y_aug.append(target)
+            n_generated += 1
+    if not X_aug:
+        return None, None, 0
+    return np.stack(X_aug).astype(np.uint8), np.stack(Y_aug).astype(np.float32), n_generated
 
 
 def main():
@@ -91,6 +123,10 @@ def main():
                           "synthetic-trained checkpoint, continued on real data)")
     ap.add_argument("--lr", type=float, default=1e-3,
                      help="Lower this (e.g. 1e-4) when fine-tuning from --resume_from")
+    ap.add_argument("--augment_crops", type=int, default=0,
+                     help="Random zoomed-in crops generated per training image (validation images "
+                          "are never augmented). Exposes the model to a much wider range of apparent "
+                          "object scale/density than the source images alone provide.")
     args = ap.parse_args()
 
     print(f"Loading dataset from {args.dataset} ...")
@@ -109,6 +145,17 @@ def main():
     X_train, Y_train = X[train_idx], Y[train_idx]
     X_val, Y_val = X[val_idx], Y[val_idx]
     print(f"Train: {len(X_train)}  Val: {len(X_val)}")
+
+    if args.augment_crops > 0:
+        print(f"Generating {args.augment_crops} random crop(s) per training image ...")
+        X_aug, Y_aug, n_generated = build_crop_augmented_set(
+            data["image_paths"], data["raw_boxes"], data["raw_classes"], train_idx,
+            n_crops=args.augment_crops, seed=args.seed,
+        )
+        if X_aug is not None:
+            X_train = np.concatenate([X_train, X_aug], axis=0)
+            Y_train = np.concatenate([Y_train, Y_aug], axis=0)
+        print(f"Added {n_generated} augmented crops -> Train: {len(X_train)}")
 
     if args.resume_from:
         print(f"Resuming from {args.resume_from}")
@@ -141,6 +188,7 @@ def main():
     with open(os.path.join(args.out, "training_report.txt"), "w") as f:
         f.write(f"Dataset: {args.dataset}\n")
         f.write(f"Resumed from: {args.resume_from or 'scratch'}\n")
+        f.write(f"Augment crops per training image: {args.augment_crops}\n")
         f.write(f"Images: {len(X)} (train {len(X_train)} / val {len(X_val)})\n")
         f.write(f"Ground-truth boxes: {n_boxes_total} "
                 f"({n_dropped_total} dropped to grid-cell collisions, "

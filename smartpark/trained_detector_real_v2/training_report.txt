@@ -1,0 +1,8 @@
+Dataset: ./real_pklot_dataset
+Resumed from: ./trained_detector/spot_detector.keras
+Augment crops per training image: 4
+Images: 1242 (train 5111 / val 186)
+Ground-truth boxes: 70684 (19965 dropped to grid-cell collisions, 28.2%)
+Epochs run: 25
+Final train loss: 16.1431
+Final val loss: 11.5799
