@@ -31,6 +31,7 @@ This README is the practical "how to run it" companion.
 | Full inference pipeline (classifier path) | `inference.py` | ✅ image + video support |
 | REST API | `api/app.py` | ✅ serves both pipelines live |
 | Upload demo UI | `demo/park_check.html` | ✅ drag-and-drop photo upload, live detection |
+| Streamlit demo | `streamlit_app.py` | ✅ same demo, presentation-friendly UI, runs in its own venv |
 
 ## Results
 
@@ -180,6 +181,31 @@ conversion scripts at wherever you extract it.
 curl http://localhost:5050/api/health
 curl -F "image=@synthetic_dataset/full_lots/lot_0000.jpg" http://localhost:5050/api/analyze
 ```
+
+## Streamlit demo (presentation-friendly)
+
+`streamlit_app.py` is the same demo with a nicer UI for presenting live --
+tabs, metrics, a results table. It's a pure HTTP client of the Flask API
+above (it never imports TensorFlow itself), and **must run in its own,
+separate virtual environment**:
+
+```bash
+# one-time setup, in a second terminal
+python3 -m venv .venv_streamlit
+source .venv_streamlit/bin/activate
+pip install streamlit requests
+
+# each time (with api/app.py already running in the *other* venv/terminal)
+source .venv_streamlit/bin/activate
+streamlit run streamlit_app.py
+```
+
+Do **not** `pip install streamlit` into the main `.venv` -- in this
+environment it upgrades a shared native dependency in a way that breaks
+TensorFlow for every process using that venv, not just ones that import
+streamlit (we hit this directly: it took down the Flask API too, and
+required rebuilding `.venv` from scratch to fix). Two separate venvs
+talking over HTTP avoids the conflict entirely.
 
 ## Regenerating the report/slides
 
