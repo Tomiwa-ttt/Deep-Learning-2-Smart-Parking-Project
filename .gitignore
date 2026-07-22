@@ -6,4 +6,7 @@ __pycache__/
 .claude/scheduled_tasks.lock
 ~$*
 smartpark/real_cnrpark_sample/
+smartpark/pklot_raw/
+smartpark/real_pklot_dataset/
+smartpark/real_dataset_v2/
 *.zip

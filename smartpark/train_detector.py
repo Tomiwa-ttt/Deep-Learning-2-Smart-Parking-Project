@@ -86,6 +86,11 @@ def main():
     ap.add_argument("--val_split", type=float, default=0.15)
     ap.add_argument("--out", default="./trained_detector")
     ap.add_argument("--seed", type=int, default=42)
+    ap.add_argument("--resume_from", default=None,
+                     help="Path to an existing .keras detector to fine-tune (e.g. the "
+                          "synthetic-trained checkpoint, continued on real data)")
+    ap.add_argument("--lr", type=float, default=1e-3,
+                     help="Lower this (e.g. 1e-4) when fine-tuning from --resume_from")
     args = ap.parse_args()
 
     print(f"Loading dataset from {args.dataset} ...")
@@ -105,8 +110,12 @@ def main():
     X_val, Y_val = X[val_idx], Y[val_idx]
     print(f"Train: {len(X_train)}  Val: {len(X_val)}")
 
-    model = build_detector()
-    model.compile(optimizer=tf.keras.optimizers.Adam(1e-3), loss=detection_loss)
+    if args.resume_from:
+        print(f"Resuming from {args.resume_from}")
+        model = tf.keras.models.load_model(args.resume_from, compile=False)
+    else:
+        model = build_detector()
+    model.compile(optimizer=tf.keras.optimizers.Adam(args.lr), loss=detection_loss)
     model.summary()
 
     callbacks = [
@@ -131,6 +140,7 @@ def main():
     val_loss = model.evaluate(X_val, Y_val, verbose=0)
     with open(os.path.join(args.out, "training_report.txt"), "w") as f:
         f.write(f"Dataset: {args.dataset}\n")
+        f.write(f"Resumed from: {args.resume_from or 'scratch'}\n")
         f.write(f"Images: {len(X)} (train {len(X_train)} / val {len(X_val)})\n")
         f.write(f"Ground-truth boxes: {n_boxes_total} "
                 f"({n_dropped_total} dropped to grid-cell collisions, "

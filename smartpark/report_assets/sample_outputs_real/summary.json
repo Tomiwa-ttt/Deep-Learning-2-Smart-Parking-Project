@@ -1,0 +1,3835 @@
+[
+  {
+    "file": "sample_00.jpg",
+    "ground_truth": {
+      "empty_spot": 24,
+      "occupied_spot": 4
+    },
+    "predicted": {
+      "empty_spot": 25,
+      "occupied_spot": 3
+    },
+    "detections": [
+      {
+        "bbox": [
+          647,
+          259,
+          743,
+          324
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9490429162979126
+      },
+      {
+        "bbox": [
+          690,
+          171,
+          792,
+          218
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9387955069541931
+      },
+      {
+        "bbox": [
+          765,
+          252,
+          861,
+          323
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9223343133926392
+      },
+      {
+        "bbox": [
+          781,
+          184,
+          878,
+          244
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9021576642990112
+      },
+      {
+        "bbox": [
+          706,
+          307,
+          821,
+          395
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9010114669799805
+      },
+      {
+        "bbox": [
+          316,
+          179,
+          387,
+          249
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8981610536575317
+      },
+      {
+        "bbox": [
+          685,
+          210,
+          783,
+          262
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8961476683616638
+      },
+      {
+        "bbox": [
+          769,
+          217,
+          862,
+          278
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8851749897003174
+      },
+      {
+        "bbox": [
+          676,
+          430,
+          780,
+          539
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8814315795898438
+      },
+      {
+        "bbox": [
+          454,
+          130,
+          541,
+          190
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8740655183792114
+      },
+      {
+        "bbox": [
+          608,
+          313,
+          713,
+          401
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8734360933303833
+      },
+      {
+        "bbox": [
+          370,
+          206,
+          471,
+          288
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8511147499084473
+      },
+      {
+        "bbox": [
+          685,
+          369,
+          818,
+          470
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8455119132995605
+      },
+      {
+        "bbox": [
+          375,
+          162,
+          463,
+          236
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8410559892654419
+      },
+      {
+        "bbox": [
+          706,
+          252,
+          824,
+          315
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8209083676338196
+      },
+      {
+        "bbox": [
+          752,
+          286,
+          862,
+          373
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8090397715568542
+      },
+      {
+        "bbox": [
+          634,
+          222,
+          735,
+          288
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.7998214364051819
+      },
+      {
+        "bbox": [
+          309,
+          250,
+          426,
+          322
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.7881933450698853
+      },
+      {
+        "bbox": [
+          286,
+          214,
+          372,
+          279
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.7668915390968323
+      },
+      {
+        "bbox": [
+          446,
+          152,
+          529,
+          227
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.7468054890632629
+      },
+      {
+        "bbox": [
+          111,
+          320,
+          164,
+          409
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.7323286533355713
+      },
+      {
+        "bbox": [
+          205,
+          245,
+          324,
+          309
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.7027246952056885
+      },
+      {
+        "bbox": [
+          377,
+          128,
+          484,
+          185
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.6945931315422058
+      },
+      {
+        "bbox": [
+          184,
+          282,
+          272,
+          362
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.6813480257987976
+      },
+      {
+        "bbox": [
+          653,
+          508,
+          829,
+          616
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.5140735507011414
+      },
+      {
+        "bbox": [
+          569,
+          557,
+          748,
+          715
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.818852424621582
+      },
+      {
+        "bbox": [
+          269,
+          296,
+          356,
+          376
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.7922259569168091
+      },
+      {
+        "bbox": [
+          390,
+          593,
+          546,
+          715
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.5773281455039978
+      }
+    ]
+  },
+  {
+    "file": "sample_01.jpg",
+    "ground_truth": {
+      "empty_spot": 33,
+      "occupied_spot": 67
+    },
+    "predicted": {
+      "empty_spot": 20,
+      "occupied_spot": 38
+    },
+    "detections": [
+      {
+        "bbox": [
+          454,
+          491,
+          539,
+          572
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9815837144851685
+      },
+      {
+        "bbox": [
+          244,
+          494,
+          327,
+          567
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9718714952468872
+      },
+      {
+        "bbox": [
+          384,
+          492,
+          499,
+          576
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9472702145576477
+      },
+      {
+        "bbox": [
+          899,
+          250,
+          953,
+          306
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9321447014808655
+      },
+      {
+        "bbox": [
+          730,
+          308,
+          769,
+          370
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9147563576698303
+      },
+      {
+        "bbox": [
+          952,
+          175,
+          978,
+          212
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9085733890533447
+      },
+      {
+        "bbox": [
+          968,
+          254,
+          994,
+          308
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8984584212303162
+      },
+      {
+        "bbox": [
+          825,
+          253,
+          880,
+          306
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8776131868362427
+      },
+      {
+        "bbox": [
+          34,
+          503,
+          119,
+          558
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.839819610118866
+      },
+      {
+        "bbox": [
+          668,
+          300,
+          722,
+          359
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8224206566810608
+      },
+      {
+        "bbox": [
+          810,
+          306,
+          850,
+          368
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8202387094497681
+      },
+      {
+        "bbox": [
+          769,
+          252,
+          810,
+          312
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.7758334279060364
+      },
+      {
+        "bbox": [
+          803,
+          182,
+          845,
+          225
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.7210580706596375
+      },
+      {
+        "bbox": [
+          810,
+          417,
+          852,
+          485
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.6802646517753601
+      },
+      {
+        "bbox": [
+          477,
+          183,
+          539,
+          239
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.6541579961776733
+      },
+      {
+        "bbox": [
+          724,
+          189,
+          770,
+          227
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.6188292503356934
+      },
+      {
+        "bbox": [
+          331,
+          259,
+          374,
+          315
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.606008768081665
+      },
+      {
+        "bbox": [
+          185,
+          492,
+          257,
+          571
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.5640510320663452
+      },
+      {
+        "bbox": [
+          587,
+          185,
+          637,
+          239
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.5455929636955261
+      },
+      {
+        "bbox": [
+          825,
+          412,
+          867,
+          468
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.5447004437446594
+      },
+      {
+        "bbox": [
+          995,
+          426,
+          1056,
+          479
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9875807166099548
+      },
+      {
+        "bbox": [
+          548,
+          270,
+          623,
+          326
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9847936630249023
+      },
+      {
+        "bbox": [
+          429,
+          419,
+          490,
+          474
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9807190895080566
+      },
+      {
+        "bbox": [
+          579,
+          301,
+          647,
+          369
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9787178635597229
+      },
+      {
+        "bbox": [
+          917,
+          422,
+          970,
+          484
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.978659987449646
+      },
+      {
+        "bbox": [
+          967,
+          308,
+          1011,
+          351
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9759426712989807
+      },
+      {
+        "bbox": [
+          458,
+          265,
+          525,
+          322
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9700847268104553
+      },
+      {
+        "bbox": [
+          924,
+          182,
+          965,
+          217
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.949906051158905
+      },
+      {
+        "bbox": [
+          295,
+          419,
+          358,
+          476
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9489233493804932
+      },
+      {
+        "bbox": [
+          204,
+          414,
+          265,
+          478
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9451297521591187
+      },
+      {
+        "bbox": [
+          1025,
+          176,
+          1057,
+          216
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9442522525787354
+      },
+      {
+        "bbox": [
+          621,
+          405,
+          668,
+          491
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.917357861995697
+      },
+      {
+        "bbox": [
+          409,
+          301,
+          465,
+          367
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9037120342254639
+      },
+      {
+        "bbox": [
+          1095,
+          423,
+          1148,
+          475
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9020781517028809
+      },
+      {
+        "bbox": [
+          389,
+          264,
+          451,
+          320
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8899158835411072
+      },
+      {
+        "bbox": [
+          1059,
+          422,
+          1106,
+          471
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8832278251647949
+      },
+      {
+        "bbox": [
+          244,
+          183,
+          298,
+          237
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8789646625518799
+      },
+      {
+        "bbox": [
+          632,
+          256,
+          692,
+          311
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8755152225494385
+      },
+      {
+        "bbox": [
+          525,
+          397,
+          601,
+          494
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.870350182056427
+      },
+      {
+        "bbox": [
+          494,
+          303,
+          555,
+          365
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8684976696968079
+      },
+      {
+        "bbox": [
+          473,
+          409,
+          548,
+          484
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8612759709358215
+      },
+      {
+        "bbox": [
+          619,
+          490,
+          704,
+          583
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8423964977264404
+      },
+      {
+        "bbox": [
+          416,
+          183,
+          470,
+          232
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8001199960708618
+      },
+      {
+        "bbox": [
+          259,
+          302,
+          305,
+          365
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.7819675207138062
+      },
+      {
+        "bbox": [
+          909,
+          296,
+          961,
+          364
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.7755814790725708
+      },
+      {
+        "bbox": [
+          628,
+          182,
+          693,
+          237
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.7663371562957764
+      },
+      {
+        "bbox": [
+          571,
+          502,
+          625,
+          567
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.7469778656959534
+      },
+      {
+        "bbox": [
+          125,
+          414,
+          182,
+          477
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.7440668344497681
+      },
+      {
+        "bbox": [
+          338,
+          185,
+          385,
+          235
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.7247576117515564
+      },
+      {
+        "bbox": [
+          63,
+          498,
+          165,
+          561
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.7092003226280212
+      },
+      {
+        "bbox": [
+          1045,
+          254,
+          1088,
+          309
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.6970206499099731
+      },
+      {
+        "bbox": [
+          254,
+          259,
+          304,
+          310
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.6795864105224609
+      },
+      {
+        "bbox": [
+          1046,
+          294,
+          1089,
+          357
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.6705004572868347
+      },
+      {
+        "bbox": [
+          316,
+          304,
+          367,
+          364
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.6289566159248352
+      },
+      {
+        "bbox": [
+          881,
+          419,
+          921,
+          475
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.5664149522781372
+      },
+      {
+        "bbox": [
+          190,
+          265,
+          260,
+          326
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.5656666159629822
+      },
+      {
+        "bbox": [
+          207,
+          293,
+          259,
+          370
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.5384441614151001
+      },
+      {
+        "bbox": [
+          293,
+          495,
+          374,
+          571
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.5193493962287903
+      }
+    ]
+  },
+  {
+    "file": "sample_02.jpg",
+    "ground_truth": {
+      "empty_spot": 100,
+      "occupied_spot": 0
+    },
+    "predicted": {
+      "empty_spot": 57,
+      "occupied_spot": 0
+    },
+    "detections": [
+      {
+        "bbox": [
+          912,
+          416,
+          956,
+          487
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9928961992263794
+      },
+      {
+        "bbox": [
+          838,
+          259,
+          885,
+          305
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9910573363304138
+      },
+      {
+        "bbox": [
+          807,
+          180,
+          846,
+          226
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9881874322891235
+      },
+      {
+        "bbox": [
+          763,
+          263,
+          805,
+          305
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9870074391365051
+      },
+      {
+        "bbox": [
+          246,
+          308,
+          290,
+          365
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9867244958877563
+      },
+      {
+        "bbox": [
+          956,
+          257,
+          1008,
+          306
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9859163761138916
+      },
+      {
+        "bbox": [
+          889,
+          257,
+          939,
+          306
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9858012795448303
+      },
+      {
+        "bbox": [
+          190,
+          498,
+          264,
+          567
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9850397109985352
+      },
+      {
+        "bbox": [
+          807,
+          305,
+          860,
+          365
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9847672581672668
+      },
+      {
+        "bbox": [
+          661,
+          186,
+          702,
+          229
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9834475517272949
+      },
+      {
+        "bbox": [
+          364,
+          184,
+          409,
+          232
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9831250309944153
+      },
+      {
+        "bbox": [
+          679,
+          261,
+          717,
+          308
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9828490018844604
+      },
+      {
+        "bbox": [
+          731,
+          182,
+          769,
+          227
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9828200936317444
+      },
+      {
+        "bbox": [
+          320,
+          305,
+          366,
+          366
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9825977683067322
+      },
+      {
+        "bbox": [
+          723,
+          310,
+          768,
+          368
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9820507168769836
+      },
+      {
+        "bbox": [
+          918,
+          176,
+          961,
+          221
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9808605909347534
+      },
+      {
+        "bbox": [
+          242,
+          498,
+          311,
+          564
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9796673655509949
+      },
+      {
+        "bbox": [
+          650,
+          313,
+          696,
+          368
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9792030453681946
+      },
+      {
+        "bbox": [
+          594,
+          310,
+          639,
+          363
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9784687757492065
+      },
+      {
+        "bbox": [
+          77,
+          499,
+          152,
+          565
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9782776832580566
+      },
+      {
+        "bbox": [
+          910,
+          306,
+          961,
+          362
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9770085215568542
+      },
+      {
+        "bbox": [
+          479,
+          185,
+          517,
+          233
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9760774374008179
+      },
+      {
+        "bbox": [
+          812,
+          421,
+          854,
+          480
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9758298397064209
+      },
+      {
+        "bbox": [
+          994,
+          425,
+          1066,
+          479
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9743103981018066
+      },
+      {
+        "bbox": [
+          515,
+          305,
+          561,
+          360
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9736896753311157
+      },
+      {
+        "bbox": [
+          417,
+          182,
+          455,
+          235
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9730615615844727
+      },
+      {
+        "bbox": [
+          280,
+          186,
+          324,
+          233
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9716721177101135
+      },
+      {
+        "bbox": [
+          331,
+          265,
+          384,
+          312
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9714415073394775
+      },
+      {
+        "bbox": [
+          969,
+          306,
+          1023,
+          360
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9705286622047424
+      },
+      {
+        "bbox": [
+          955,
+          179,
+          987,
+          217
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9685288071632385
+      },
+      {
+        "bbox": [
+          465,
+          263,
+          513,
+          315
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9676890969276428
+      },
+      {
+        "bbox": [
+          385,
+          263,
+          438,
+          314
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9655172824859619
+      },
+      {
+        "bbox": [
+          120,
+          409,
+          195,
+          475
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9651113748550415
+      },
+      {
+        "bbox": [
+          587,
+          186,
+          631,
+          231
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9646047353744507
+      },
+      {
+        "bbox": [
+          573,
+          262,
+          618,
+          315
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9627922177314758
+      },
+      {
+        "bbox": [
+          482,
+          421,
+          539,
+          476
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9587331414222717
+      },
+      {
+        "bbox": [
+          47,
+          497,
+          108,
+          559
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9584267139434814
+      },
+      {
+        "bbox": [
+          255,
+          264,
+          309,
+          310
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9564144611358643
+      },
+      {
+        "bbox": [
+          252,
+          417,
+          307,
+          480
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9560120701789856
+      },
+      {
+        "bbox": [
+          466,
+          502,
+          532,
+          568
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9558799862861633
+      },
+      {
+        "bbox": [
+          436,
+          418,
+          493,
+          479
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9544762969017029
+      },
+      {
+        "bbox": [
+          427,
+          303,
+          476,
+          365
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9516486525535583
+      },
+      {
+        "bbox": [
+          294,
+          419,
+          352,
+          479
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9512141942977905
+      },
+      {
+        "bbox": [
+          201,
+          410,
+          270,
+          482
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9488421082496643
+      },
+      {
+        "bbox": [
+          195,
+          308,
+          256,
+          364
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9462139010429382
+      },
+      {
+        "bbox": [
+          545,
+          419,
+          600,
+          479
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9440679550170898
+      },
+      {
+        "bbox": [
+          296,
+          499,
+          363,
+          566
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9437037706375122
+      },
+      {
+        "bbox": [
+          1038,
+          414,
+          1103,
+          485
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9405053853988647
+      },
+      {
+        "bbox": [
+          401,
+          501,
+          477,
+          566
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9365283250808716
+      },
+      {
+        "bbox": [
+          1052,
+          256,
+          1094,
+          306
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9350176453590393
+      },
+      {
+        "bbox": [
+          625,
+          421,
+          677,
+          478
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.933467447757721
+      },
+      {
+        "bbox": [
+          577,
+          508,
+          627,
+          565
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9205091595649719
+      },
+      {
+        "bbox": [
+          1026,
+          175,
+          1062,
+          217
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9093570113182068
+      },
+      {
+        "bbox": [
+          1062,
+          299,
+          1119,
+          360
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9078798294067383
+      },
+      {
+        "bbox": [
+          1087,
+          413,
+          1155,
+          485
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8993324637413025
+      },
+      {
+        "bbox": [
+          629,
+          505,
+          676,
+          570
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8635104298591614
+      },
+      {
+        "bbox": [
+          709,
+          419,
+          758,
+          479
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.7033913731575012
+      }
+    ]
+  },
+  {
+    "file": "sample_03.jpg",
+    "ground_truth": {
+      "empty_spot": 8,
+      "occupied_spot": 92
+    },
+    "predicted": {
+      "empty_spot": 5,
+      "occupied_spot": 53
+    },
+    "detections": [
+      {
+        "bbox": [
+          401,
+          499,
+          475,
+          568
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9624100923538208
+      },
+      {
+        "bbox": [
+          246,
+          500,
+          316,
+          565
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8549723625183105
+      },
+      {
+        "bbox": [
+          461,
+          504,
+          522,
+          571
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8524022102355957
+      },
+      {
+        "bbox": [
+          80,
+          504,
+          162,
+          558
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8080243468284607
+      },
+      {
+        "bbox": [
+          485,
+          265,
+          528,
+          315
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.5095129609107971
+      },
+      {
+        "bbox": [
+          310,
+          416,
+          363,
+          476
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9840232133865356
+      },
+      {
+        "bbox": [
+          258,
+          424,
+          310,
+          470
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9770308136940002
+      },
+      {
+        "bbox": [
+          899,
+          424,
+          950,
+          479
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9714587330818176
+      },
+      {
+        "bbox": [
+          1085,
+          410,
+          1159,
+          486
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9704990386962891
+      },
+      {
+        "bbox": [
+          540,
+          416,
+          598,
+          478
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9697039723396301
+      },
+      {
+        "bbox": [
+          1061,
+          297,
+          1123,
+          366
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9678717255592346
+      },
+      {
+        "bbox": [
+          451,
+          421,
+          503,
+          474
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9650852680206299
+      },
+      {
+        "bbox": [
+          917,
+          304,
+          976,
+          361
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9646340608596802
+      },
+      {
+        "bbox": [
+          208,
+          414,
+          267,
+          475
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9639047980308533
+      },
+      {
+        "bbox": [
+          796,
+          419,
+          853,
+          483
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9606892466545105
+      },
+      {
+        "bbox": [
+          908,
+          182,
+          964,
+          224
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9585673213005066
+      },
+      {
+        "bbox": [
+          895,
+          257,
+          943,
+          313
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9553994536399841
+      },
+      {
+        "bbox": [
+          248,
+          261,
+          296,
+          308
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9538299441337585
+      },
+      {
+        "bbox": [
+          340,
+          181,
+          395,
+          229
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9525446891784668
+      },
+      {
+        "bbox": [
+          974,
+          308,
+          1029,
+          360
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9445242285728455
+      },
+      {
+        "bbox": [
+          386,
+          262,
+          450,
+          318
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9406499266624451
+      },
+      {
+        "bbox": [
+          306,
+          265,
+          367,
+          314
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9402894973754883
+      },
+      {
+        "bbox": [
+          940,
+          175,
+          989,
+          211
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9389328956604004
+      },
+      {
+        "bbox": [
+          1037,
+          418,
+          1090,
+          480
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9337149262428284
+      },
+      {
+        "bbox": [
+          290,
+          497,
+          367,
+          564
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9321422576904297
+      },
+      {
+        "bbox": [
+          478,
+          416,
+          535,
+          479
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9311480522155762
+      },
+      {
+        "bbox": [
+          410,
+          174,
+          458,
+          230
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9136339426040649
+      },
+      {
+        "bbox": [
+          800,
+          307,
+          848,
+          368
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9106326103210449
+      },
+      {
+        "bbox": [
+          736,
+          310,
+          773,
+          366
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9012126326560974
+      },
+      {
+        "bbox": [
+          133,
+          418,
+          181,
+          458
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8990252017974854
+      },
+      {
+        "bbox": [
+          676,
+          256,
+          718,
+          311
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8933230042457581
+      },
+      {
+        "bbox": [
+          795,
+          180,
+          848,
+          231
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8923539519309998
+      },
+      {
+        "bbox": [
+          332,
+          308,
+          377,
+          365
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8919389247894287
+      },
+      {
+        "bbox": [
+          1038,
+          248,
+          1095,
+          304
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8907848000526428
+      },
+      {
+        "bbox": [
+          570,
+          503,
+          628,
+          570
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8877193927764893
+      },
+      {
+        "bbox": [
+          651,
+          308,
+          696,
+          362
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8808716535568237
+      },
+      {
+        "bbox": [
+          834,
+          258,
+          890,
+          313
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8805204033851624
+      },
+      {
+        "bbox": [
+          234,
+          303,
+          278,
+          366
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8796148300170898
+      },
+      {
+        "bbox": [
+          492,
+          181,
+          545,
+          236
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8735527992248535
+      },
+      {
+        "bbox": [
+          654,
+          180,
+          696,
+          227
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8720978498458862
+      },
+      {
+        "bbox": [
+          1014,
+          182,
+          1068,
+          214
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8703701496124268
+      },
+      {
+        "bbox": [
+          570,
+          261,
+          625,
+          311
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8589833378791809
+      },
+      {
+        "bbox": [
+          609,
+          499,
+          682,
+          574
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8573768138885498
+      },
+      {
+        "bbox": [
+          729,
+          180,
+          776,
+          223
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8561344742774963
+      },
+      {
+        "bbox": [
+          997,
+          416,
+          1069,
+          488
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8560856580734253
+      },
+      {
+        "bbox": [
+          733,
+          420,
+          785,
+          475
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.85294508934021
+      },
+      {
+        "bbox": [
+          617,
+          412,
+          677,
+          485
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8525830507278442
+      },
+      {
+        "bbox": [
+          266,
+          178,
+          317,
+          234
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8518190383911133
+      },
+      {
+        "bbox": [
+          434,
+          306,
+          482,
+          366
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8354014158248901
+      },
+      {
+        "bbox": [
+          601,
+          311,
+          639,
+          362
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8232048749923706
+      },
+      {
+        "bbox": [
+          191,
+          498,
+          263,
+          576
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8166855573654175
+      },
+      {
+        "bbox": [
+          762,
+          253,
+          809,
+          307
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.7925418019294739
+      },
+      {
+        "bbox": [
+          574,
+          181,
+          626,
+          238
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.7773425579071045
+      },
+      {
+        "bbox": [
+          869,
+          415,
+          929,
+          479
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.7594632506370544
+      },
+      {
+        "bbox": [
+          501,
+          314,
+          544,
+          360
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.7374585270881653
+      },
+      {
+        "bbox": [
+          199,
+          302,
+          256,
+          365
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.6812049746513367
+      },
+      {
+        "bbox": [
+          46,
+          504,
+          111,
+          553
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.551383912563324
+      },
+      {
+        "bbox": [
+          955,
+          250,
+          1005,
+          314
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.548424482345581
+      }
+    ]
+  },
+  {
+    "file": "sample_04.jpg",
+    "ground_truth": {
+      "empty_spot": 74,
+      "occupied_spot": 26
+    },
+    "predicted": {
+      "empty_spot": 38,
+      "occupied_spot": 22
+    },
+    "detections": [
+      {
+        "bbox": [
+          821,
+          184,
+          854,
+          231
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9843902587890625
+      },
+      {
+        "bbox": [
+          915,
+          308,
+          961,
+          360
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9824312329292297
+      },
+      {
+        "bbox": [
+          341,
+          270,
+          360,
+          300
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9753389358520508
+      },
+      {
+        "bbox": [
+          417,
+          314,
+          448,
+          359
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9598080515861511
+      },
+      {
+        "bbox": [
+          340,
+          304,
+          366,
+          346
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9592843651771545
+      },
+      {
+        "bbox": [
+          974,
+          307,
+          1022,
+          359
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9565653204917908
+      },
+      {
+        "bbox": [
+          968,
+          254,
+          1008,
+          301
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9554201364517212
+      },
+      {
+        "bbox": [
+          980,
+          180,
+          1019,
+          219
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9487228989601135
+      },
+      {
+        "bbox": [
+          357,
+          194,
+          386,
+          228
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9469391703605652
+      },
+      {
+        "bbox": [
+          1067,
+          305,
+          1111,
+          360
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9187522530555725
+      },
+      {
+        "bbox": [
+          383,
+          481,
+          503,
+          589
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.916383683681488
+      },
+      {
+        "bbox": [
+          80,
+          495,
+          171,
+          573
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9145004153251648
+      },
+      {
+        "bbox": [
+          660,
+          304,
+          691,
+          366
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9065037965774536
+      },
+      {
+        "bbox": [
+          808,
+          265,
+          852,
+          308
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9021826386451721
+      },
+      {
+        "bbox": [
+          924,
+          185,
+          959,
+          225
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8951735496520996
+      },
+      {
+        "bbox": [
+          445,
+          484,
+          561,
+          584
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8907378315925598
+      },
+      {
+        "bbox": [
+          496,
+          186,
+          537,
+          227
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8905009627342224
+      },
+      {
+        "bbox": [
+          674,
+          259,
+          702,
+          299
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8775646090507507
+      },
+      {
+        "bbox": [
+          1052,
+          257,
+          1095,
+          307
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8760287761688232
+      },
+      {
+        "bbox": [
+          1027,
+          179,
+          1066,
+          216
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.858626127243042
+      },
+      {
+        "bbox": [
+          742,
+          409,
+          790,
+          484
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8373695611953735
+      },
+      {
+        "bbox": [
+          664,
+          182,
+          700,
+          228
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8198553919792175
+      },
+      {
+        "bbox": [
+          531,
+          478,
+          662,
+          592
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8132594227790833
+      },
+      {
+        "bbox": [
+          602,
+          482,
+          742,
+          592
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8030925393104553
+      },
+      {
+        "bbox": [
+          694,
+          480,
+          808,
+          590
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.7988380193710327
+      },
+      {
+        "bbox": [
+          524,
+          305,
+          553,
+          351
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.7952621579170227
+      },
+      {
+        "bbox": [
+          890,
+          251,
+          933,
+          300
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.7844507098197937
+      },
+      {
+        "bbox": [
+          895,
+          402,
+          946,
+          491
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.7562279105186462
+      },
+      {
+        "bbox": [
+          250,
+          276,
+          272,
+          299
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.7526593208312988
+      },
+      {
+        "bbox": [
+          717,
+          179,
+          745,
+          229
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.7468454241752625
+      },
+      {
+        "bbox": [
+          753,
+          261,
+          791,
+          293
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.7064567804336548
+      },
+      {
+        "bbox": [
+          279,
+          492,
+          399,
+          583
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.665535032749176
+      },
+      {
+        "bbox": [
+          729,
+          311,
+          767,
+          364
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.6292141675949097
+      },
+      {
+        "bbox": [
+          42,
+          504,
+          109,
+          562
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.5893638730049133
+      },
+      {
+        "bbox": [
+          654,
+          409,
+          706,
+          483
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.5867358446121216
+      },
+      {
+        "bbox": [
+          171,
+          495,
+          279,
+          575
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.5851414203643799
+      },
+      {
+        "bbox": [
+          673,
+          127,
+          718,
+          170
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.5675530433654785
+      },
+      {
+        "bbox": [
+          230,
+          496,
+          330,
+          578
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.5586685538291931
+      },
+      {
+        "bbox": [
+          262,
+          416,
+          299,
+          480
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9672006964683533
+      },
+      {
+        "bbox": [
+          135,
+          424,
+          180,
+          468
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9206556081771851
+      },
+      {
+        "bbox": [
+          429,
+          418,
+          472,
+          476
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9129250645637512
+      },
+      {
+        "bbox": [
+          581,
+          401,
+          631,
+          485
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9044232368469238
+      },
+      {
+        "bbox": [
+          1053,
+          401,
+          1121,
+          492
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9012852311134338
+      },
+      {
+        "bbox": [
+          1091,
+          417,
+          1158,
+          479
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8958253264427185
+      },
+      {
+        "bbox": [
+          392,
+          269,
+          425,
+          307
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8947752118110657
+      },
+      {
+        "bbox": [
+          807,
+          407,
+          873,
+          476
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.862234890460968
+      },
+      {
+        "bbox": [
+          343,
+          413,
+          370,
+          480
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8543407320976257
+      },
+      {
+        "bbox": [
+          258,
+          312,
+          286,
+          353
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8431071043014526
+      },
+      {
+        "bbox": [
+          581,
+          275,
+          622,
+          311
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8023896813392639
+      },
+      {
+        "bbox": [
+          571,
+          301,
+          607,
+          370
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.7772392630577087
+      },
+      {
+        "bbox": [
+          265,
+          178,
+          303,
+          228
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.7508294582366943
+      },
+      {
+        "bbox": [
+          504,
+          267,
+          523,
+          301
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.7228197455406189
+      },
+      {
+        "bbox": [
+          202,
+          415,
+          244,
+          480
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.708310604095459
+      },
+      {
+        "bbox": [
+          825,
+          311,
+          860,
+          367
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.706969141960144
+      },
+      {
+        "bbox": [
+          560,
+          123,
+          617,
+          178
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.6660763621330261
+      },
+      {
+        "bbox": [
+          492,
+          411,
+          534,
+          485
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.6553556323051453
+      },
+      {
+        "bbox": [
+          581,
+          184,
+          620,
+          228
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.6241139769554138
+      },
+      {
+        "bbox": [
+          408,
+          188,
+          435,
+          226
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.6228657364845276
+      },
+      {
+        "bbox": [
+          209,
+          311,
+          241,
+          363
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.601363480091095
+      },
+      {
+        "bbox": [
+          700,
+          133,
+          765,
+          175
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.5283317565917969
+      }
+    ]
+  },
+  {
+    "file": "sample_05.jpg",
+    "ground_truth": {
+      "empty_spot": 0,
+      "occupied_spot": 0
+    },
+    "predicted": {
+      "empty_spot": 13,
+      "occupied_spot": 0
+    },
+    "detections": [
+      {
+        "bbox": [
+          789,
+          129,
+          890,
+          194
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9494286179542542
+      },
+      {
+        "bbox": [
+          765,
+          247,
+          891,
+          320
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9076471924781799
+      },
+      {
+        "bbox": [
+          222,
+          234,
+          324,
+          325
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.881619930267334
+      },
+      {
+        "bbox": [
+          767,
+          204,
+          876,
+          271
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.860306978225708
+      },
+      {
+        "bbox": [
+          697,
+          207,
+          804,
+          266
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8537581562995911
+      },
+      {
+        "bbox": [
+          362,
+          213,
+          469,
+          291
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8095968961715698
+      },
+      {
+        "bbox": [
+          301,
+          196,
+          397,
+          271
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.793561577796936
+      },
+      {
+        "bbox": [
+          750,
+          173,
+          873,
+          229
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.7202513217926025
+      },
+      {
+        "bbox": [
+          447,
+          154,
+          555,
+          237
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.7132741212844849
+      },
+      {
+        "bbox": [
+          684,
+          175,
+          794,
+          223
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.601580023765564
+      },
+      {
+        "bbox": [
+          690,
+          139,
+          799,
+          188
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.5759189128875732
+      },
+      {
+        "bbox": [
+          379,
+          127,
+          461,
+          190
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.5261563062667847
+      },
+      {
+        "bbox": [
+          368,
+          167,
+          468,
+          241
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.5177586674690247
+      }
+    ]
+  },
+  {
+    "file": "sample_06.jpg",
+    "ground_truth": {
+      "empty_spot": 1,
+      "occupied_spot": 39
+    },
+    "predicted": {
+      "empty_spot": 1,
+      "occupied_spot": 40
+    },
+    "detections": [
+      {
+        "bbox": [
+          1090,
+          347,
+          1170,
+          420
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.6001409292221069
+      },
+      {
+        "bbox": [
+          294,
+          93,
+          380,
+          127
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9945326447486877
+      },
+      {
+        "bbox": [
+          386,
+          73,
+          452,
+          99
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9918544292449951
+      },
+      {
+        "bbox": [
+          1007,
+          187,
+          1099,
+          247
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9903888702392578
+      },
+      {
+        "bbox": [
+          351,
+          117,
+          414,
+          162
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9816185832023621
+      },
+      {
+        "bbox": [
+          535,
+          269,
+          654,
+          320
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9718700647354126
+      },
+      {
+        "bbox": [
+          682,
+          57,
+          722,
+          94
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9716746211051941
+      },
+      {
+        "bbox": [
+          635,
+          21,
+          690,
+          66
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9702203273773193
+      },
+      {
+        "bbox": [
+          426,
+          133,
+          546,
+          179
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9700451493263245
+      },
+      {
+        "bbox": [
+          611,
+          397,
+          791,
+          477
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.968966007232666
+      },
+      {
+        "bbox": [
+          434,
+          313,
+          556,
+          385
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9630298614501953
+      },
+      {
+        "bbox": [
+          888,
+          108,
+          965,
+          141
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9559706449508667
+      },
+      {
+        "bbox": [
+          830,
+          77,
+          921,
+          126
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9558638334274292
+      },
+      {
+        "bbox": [
+          925,
+          128,
+          1018,
+          184
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9552801847457886
+      },
+      {
+        "bbox": [
+          728,
+          491,
+          860,
+          569
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9548978209495544
+      },
+      {
+        "bbox": [
+          795,
+          44,
+          855,
+          86
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9542815685272217
+      },
+      {
+        "bbox": [
+          868,
+          181,
+          938,
+          254
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.95232754945755
+      },
+      {
+        "bbox": [
+          942,
+          234,
+          1004,
+          296
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9332606792449951
+      },
+      {
+        "bbox": [
+          723,
+          86,
+          778,
+          123
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9291461110115051
+      },
+      {
+        "bbox": [
+          430,
+          99,
+          508,
+          145
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9280572533607483
+      },
+      {
+        "bbox": [
+          1085,
+          60,
+          1132,
+          109
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9229931831359863
+      },
+      {
+        "bbox": [
+          638,
+          534,
+          774,
+          663
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9155193567276001
+      },
+      {
+        "bbox": [
+          451,
+          165,
+          571,
+          225
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.9055604934692383
+      },
+      {
+        "bbox": [
+          799,
+          151,
+          874,
+          199
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8917437195777893
+      },
+      {
+        "bbox": [
+          503,
+          374,
+          605,
+          452
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8910402059555054
+      },
+      {
+        "bbox": [
+          285,
+          50,
+          363,
+          91
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.885083019733429
+      },
+      {
+        "bbox": [
+          467,
+          348,
+          618,
+          402
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8839967846870422
+      },
+      {
+        "bbox": [
+          1016,
+          285,
+          1086,
+          340
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8828255534172058
+      },
+      {
+        "bbox": [
+          597,
+          332,
+          740,
+          397
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.876192569732666
+      },
+      {
+        "bbox": [
+          523,
+          223,
+          609,
+          271
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8710797429084778
+      },
+      {
+        "bbox": [
+          1108,
+          91,
+          1176,
+          141
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8637170195579529
+      },
+      {
+        "bbox": [
+          390,
+          202,
+          505,
+          259
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8441424369812012
+      },
+      {
+        "bbox": [
+          1141,
+          292,
+          1240,
+          363
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8338335156440735
+      },
+      {
+        "bbox": [
+          1071,
+          231,
+          1152,
+          300
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8195033669471741
+      },
+      {
+        "bbox": [
+          728,
+          20,
+          805,
+          53
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.814678966999054
+      },
+      {
+        "bbox": [
+          560,
+          456,
+          684,
+          525
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8142558336257935
+      },
+      {
+        "bbox": [
+          360,
+          164,
+          437,
+          206
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.8110215663909912
+      },
+      {
+        "bbox": [
+          739,
+          44,
+          782,
+          84
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.7722565531730652
+      },
+      {
+        "bbox": [
+          579,
+          314,
+          712,
+          360
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.7670832276344299
+      },
+      {
+        "bbox": [
+          428,
+          254,
+          517,
+          317
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.7582798600196838
+      },
+      {
+        "bbox": [
+          1003,
+          24,
+          1072,
+          77
+        ],
+        "class_id": 1,
+        "class_name": "occupied_spot",
+        "confidence": 0.6571446061134338
+      }
+    ]
+  },
+  {
+    "file": "sample_07.jpg",
+    "ground_truth": {
+      "empty_spot": 28,
+      "occupied_spot": 0
+    },
+    "predicted": {
+      "empty_spot": 24,
+      "occupied_spot": 0
+    },
+    "detections": [
+      {
+        "bbox": [
+          899,
+          137,
+          982,
+          190
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9354438185691833
+      },
+      {
+        "bbox": [
+          760,
+          393,
+          855,
+          488
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.925499439239502
+      },
+      {
+        "bbox": [
+          534,
+          111,
+          606,
+          178
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.9229853749275208
+      },
+      {
+        "bbox": [
+          789,
+          320,
+          883,
+          425
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8934622406959534
+      },
+      {
+        "bbox": [
+          447,
+          180,
+          531,
+          247
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8878449201583862
+      },
+      {
+        "bbox": [
+          401,
+          216,
+          488,
+          282
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8873316645622253
+      },
+      {
+        "bbox": [
+          856,
+          198,
+          925,
+          272
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8721891641616821
+      },
+      {
+        "bbox": [
+          747,
+          212,
+          827,
+          262
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8714873790740967
+      },
+      {
+        "bbox": [
+          580,
+          96,
+          632,
+          148
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8535609841346741
+      },
+      {
+        "bbox": [
+          685,
+          279,
+          777,
+          346
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8502732515335083
+      },
+      {
+        "bbox": [
+          191,
+          278,
+          273,
+          360
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8455834984779358
+      },
+      {
+        "bbox": [
+          303,
+          196,
+          401,
+          268
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8378041982650757
+      },
+      {
+        "bbox": [
+          865,
+          170,
+          963,
+          219
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.8350770473480225
+      },
+      {
+        "bbox": [
+          704,
+          469,
+          835,
+          570
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.790165901184082
+      },
+      {
+        "bbox": [
+          364,
+          254,
+          426,
+          328
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.77876877784729
+      },
+      {
+        "bbox": [
+          789,
+          292,
+          905,
+          362
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.7726022601127625
+      },
+      {
+        "bbox": [
+          840,
+          238,
+          932,
+          318
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.770110011100769
+      },
+      {
+        "bbox": [
+          463,
+          120,
+          544,
+          192
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.7568838000297546
+      },
+      {
+        "bbox": [
+          799,
+          129,
+          892,
+          184
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.7440575361251831
+      },
+      {
+        "bbox": [
+          268,
+          238,
+          338,
+          310
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.7082207798957825
+      },
+      {
+        "bbox": [
+          416,
+          129,
+          481,
+          200
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.7053301334381104
+      },
+      {
+        "bbox": [
+          370,
+          167,
+          451,
+          230
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.659712553024292
+      },
+      {
+        "bbox": [
+          501,
+          94,
+          559,
+          147
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.5543568134307861
+      },
+      {
+        "bbox": [
+          762,
+          169,
+          869,
+          209
+        ],
+        "class_id": 0,
+        "class_name": "empty_spot",
+        "confidence": 0.5378828048706055
+      }
+    ]
+  }
+]
