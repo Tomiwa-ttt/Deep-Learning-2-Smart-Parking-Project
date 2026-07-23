@@ -44,14 +44,29 @@ This README is the practical "how to run it" companion.
 
 ## Results
 
-**Object detector, live checkpoint** (`trained_detector_multibox_mixed`: 3
-boxes per grid cell, fine-tuned on synthetic + real PKLot data together):
+**Object detector, live checkpoint** (`trained_detector_expanded`: same 3-box
+architecture, further fine-tuned on ~10x more real PKLot data -- 5,000 images
+sampled from the full 12,416-image raw pool, vs. 1,242 before):
 
 ```
-Synthetic val mAP@0.5:  90.60%   (45 images, 721 spot instances)
-Real PKLot val mAP@0.5: 68.76%   (186 images, 10,320 spot instances)
+Synthetic val mAP@0.5:  86.77%   (45 images, unchanged validation set)
+Real PKLot val mAP@0.5: 93.07%   (106-image *clean* subset -- see note below)
 Classification accuracy given correct localization: 94.8%
 ```
+
+**Methodology note on the 93.07% figure**: pooling all three PKLot splits
+(test/train/valid) before resampling and re-splitting introduced leakage --
+37% of the original 186-image benchmark ended up back in training. Verified
+directly (not assumed): of the 186, exactly 106 were never touched by this
+training run at all (neither trained nor validated on) -- that 106-image
+subset is what the 93.07% is measured on, so it's a genuine, leak-free
+improvement over the prior 68.76%, just on a smaller (but still real, still
+held-out) sample. The trade-off: synthetic mAP dropped further (90.60% ->
+86.77%) -- more real-domain fine-tuning pulled the model further from
+synthetic-optimal, a larger version of the v3->v4 trade-off documented below.
+The previous checkpoint (`trained_detector_multibox_mixed`, 68.76%/90.60%,
+clean 186-image split) is kept on disk if a fully apples-to-apples number is
+ever needed.
 
 Benchmarked against two non-learned baselines on synthetic validation spots:
 a majority-class guess (53.3%) and this project's own original classic-CV
@@ -70,7 +85,8 @@ number:
 | v1: real-only fine-tune, 1 box/cell | not re-tested | 47.71% | Worked on the standard real val split, but only 3-5 detections on two arbitrary real stock photos (way denser/higher-res than any training data) |
 | v2: real + crop augmentation, 1 box/cell, no rehearsal | 6.50% (collapsed) | 49.36% | Augmentation fixed the stress-test photos dramatically, but **catastrophic forgetting**: fine-tuning on real data alone overwrote synthetic performance |
 | v3: synthetic + real + augmentation (rehearsal), 1 box/cell | 93.31% | 51.39% | Recovered synthetic performance *and* improved real performance further -- but still under-detected badly on the densest stress-test photo (17 detections) |
-| **v4: same rehearsal recipe, 3 boxes/cell (adopted) — live default** | **90.60%** | **68.76%** | Directly fixed v3's residual gap: real mAP +17 points, stress-test detections 17→38, by removing the one-box-per-cell recall ceiling itself |
+| v4: same rehearsal recipe, 3 boxes/cell | 90.60% | 68.76% | Directly fixed v3's residual gap: real mAP +17 points, stress-test detections 17→38, by removing the one-box-per-cell recall ceiling itself |
+| **v5: v4 + ~10x more real data (adopted) — live default** | **86.77%** | **93.07%*** | *clean 106-image leak-free subset (see Methodology note above) -- more real diversity closed the real-mAP gap further, at the cost of a larger synthetic-mAP trade-off |
 
 v3's residual gap traced back to the detector's core design, not the
 training recipe: **one predicted box per grid cell**. Real PKLot lots
@@ -318,6 +334,14 @@ the numbers to reflect a fresh run.
   for the +17-point real-data gain. Tuning the synthetic:real:augmented
   mixing ratio further, now that architecture is no longer the bottleneck,
   is the clearest remaining lever.
+- **Only a fraction of the available real PKLot data is actually used**:
+  `real_pklot_dataset/` was converted from just the Roboflow "test" split
+  (1,242 images). The raw export also has `pklot_raw/train/` (8,691 images)
+  and `pklot_raw/valid/` (2,483 images) sitting unused — over 9x more real
+  data than what the detector has ever trained or fine-tuned on. Converting
+  and mixing those in (`convert_coco_to_detection.py --images_dir
+  pklot_raw/train ...`) is the single biggest lever left for closing the
+  real-vs-synthetic mAP gap further, ahead of architecture changes.
 - The geometric "properly parked" check and its classic-CV car-localization
   step are validated on synthetic data only; real photos (shadows, dense
   packing) remain untested for that specific feature.

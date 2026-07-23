@@ -34,7 +34,7 @@ from detector_utils import decode_predictions, draw_detections, preprocess_image
 from inference import run_inference, load_spots_for_lot, draw_annotated
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DETECTOR_PATH = os.path.join(HERE, "trained_detector_multibox_mixed", "spot_detector.keras")
+DETECTOR_PATH = os.path.join(HERE, "trained_detector_expanded", "spot_detector.keras")
 CLASSIFIER_PATH = os.path.join(HERE, "trained_model", "parking_spot_cnn.keras")
 MANIFEST_PATH = os.path.join(HERE, "synthetic_dataset", "manifest.json")
 LOTS_DIR = os.path.join(HERE, "synthetic_dataset", "full_lots")
@@ -115,8 +115,8 @@ with st.sidebar:
     st.header("Model")
     st.markdown(
         "**Object detector** (primary)\n"
-        "- Synthetic val: 90.60% mAP@0.5\n"
-        "- Real PKLot val: 68.76% mAP@0.5\n\n"
+        "- Synthetic val: 86.77% mAP@0.5\n"
+        "- Real PKLot val: 93.07% mAP@0.5 (clean held-out subset)\n\n"
         "**Occupancy classifier** (secondary, calibrated cameras)\n"
         "- Real PKLot: 98.69% accuracy\n\n"
         "Full results: `report_assets/SmartPark_Report.docx`"

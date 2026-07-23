@@ -10,5 +10,7 @@ __pycache__/
 smartpark/real_cnrpark_sample/
 smartpark/pklot_raw/
 smartpark/real_pklot_dataset/
+smartpark/real_pklot_dataset_train/
+smartpark/real_pklot_dataset_valid/
 smartpark/real_dataset_v2/
 *.zip

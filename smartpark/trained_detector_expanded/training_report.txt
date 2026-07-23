@@ -1,0 +1,13 @@
+Real datasets combined: ['./real_pklot_dataset', './real_pklot_dataset_train', './real_pklot_dataset_valid']
+Combined real pool: 12416 images, sampled down to 5000
+Train: 4505 (synthetic 255 + real 4250)
+Val: synthetic 45, real 750
+Epochs: 25, lr=5e-05
+Resumed from: ./trained_detector_multibox_mixed/spot_detector.keras
+
+Real PKLot mAP@0.5 (expanded, fresh split, 750 images): 91.78%
+Synthetic mAP@0.5 (unchanged val set, 45 images): 86.77%
+
+Reference -- prior checkpoint (trained_detector_multibox_mixed), different val composition:
+  Real PKLot mAP@0.5: 68.76% (186 images from the original 1,242-image test-split-only pool)
+  Synthetic mAP@0.5: 90.60%
