@@ -7,10 +7,11 @@ upload demo. A second pipeline (occupancy classifier + geometric
 misparking check) is kept for cameras with known, calibrated spot
 boundaries.
 
-The live checkpoint (`trained_detector_mixed/spot_detector.keras`) was
-fine-tuned on synthetic **and** real PKLot data together, after two earlier
-attempts revealed real failure modes worth knowing about before you trust
-any of this on your own photos -- see "The fine-tuning journey" below.
+The live checkpoint (`trained_detector_multibox_mixed/spot_detector.keras`)
+predicts 3 boxes per grid cell (not 1) and was fine-tuned on synthetic
+**and** real PKLot data together. Getting here took four iterations, each
+exposing a real failure mode worth knowing about before you trust any of
+this on your own photos -- see "The fine-tuning journey" below.
 
 For the full writeup (background, dataset, architecture, training,
 evaluation, hyperparameter tuning, benchmarking, discussion, and both the
@@ -32,7 +33,8 @@ This README is the practical "how to run it" companion.
 | Zero-shot cross-domain test | `real_photo_test.py` | ✅ qualitative test on real CNRPark-EXT photos (unfamiliar domain) |
 | Real-data detector fine-tuning | `train_detector.py --resume_from`, `convert_coco_to_detection.py` | ✅ 47.71% mAP@0.5 on real PKLot photos |
 | Crop/scale augmentation | `augmentation.py`, `train_detector.py --augment_crops` | ✅ fixes scale/density generalization; caused catastrophic forgetting alone |
-| Rehearsal-based mixed fine-tuning (**live default**) | `train_detector_mixed.py` | ✅ 93.31% synthetic mAP + 51.39% real mAP -- best of all variants |
+| Rehearsal-based mixed fine-tuning (single-box, superseded) | `train_detector_mixed.py` | ✅ 93.31% synthetic mAP + 51.39% real mAP |
+| Multi-box-per-cell architecture (**live default**) | `models/detector_model.py` (`NUM_BOXES_PER_CELL=3`) | ✅ 90.60% synthetic mAP + **68.76% real mAP** -- eliminates grid-cell collisions |
 | Occupancy classifier (secondary pipeline) | `models/cnn_model.py`, `train.py` | ✅ 97.5% val accuracy (synthetic), 98.69% (real PKLot) |
 | Improper-parking geometry check | `improper_parking.py` | ✅ IoU/overflow logic |
 | Full inference pipeline (classifier path) | `inference.py` | ✅ image + video support |
@@ -42,12 +44,13 @@ This README is the practical "how to run it" companion.
 
 ## Results
 
-**Object detector, live checkpoint** (`trained_detector_mixed`, fine-tuned on
-synthetic + real PKLot data together):
+**Object detector, live checkpoint** (`trained_detector_multibox_mixed`: 3
+boxes per grid cell, fine-tuned on synthetic + real PKLot data together):
 
 ```
-Synthetic val mAP@0.5:  93.31%   (45 images, 721 spot instances)
-Real PKLot val mAP@0.5: 51.39%   (186 images, 10,320 spot instances)
+Synthetic val mAP@0.5:  90.60%   (45 images, 721 spot instances)
+Real PKLot val mAP@0.5: 68.76%   (186 images, 10,320 spot instances)
+Classification accuracy given correct localization: 94.8%
 ```
 
 Benchmarked against two non-learned baselines on synthetic validation spots:
@@ -57,41 +60,47 @@ accuracy given correct localization on that set.
 
 ### The fine-tuning journey (why this specific checkpoint)
 
-Three variants were actually trained and compared -- this wasn't the first
+Four variants were actually trained and compared -- this wasn't the first
 thing tried, and the failures along the way are as informative as the final
 number:
 
 | Variant | Synthetic mAP | Real mAP | Notes |
 |---|---|---|---|
-| Base: synthetic only | 98.71% | -- (never tested on real boxes until fine-tuned) | The original OD deliverable |
-| v1: real-only fine-tune | not re-tested | 47.71% | Worked on the standard real val split, but only 3-5 detections on two arbitrary real stock photos (way denser/higher-res than any training data) |
-| v2: real + crop augmentation, no rehearsal | 6.50% (collapsed) | 49.36% | Augmentation fixed the stress-test photos dramatically, but **catastrophic forgetting**: fine-tuning on real data alone overwrote synthetic performance |
-| **v3: synthetic + real + augmentation (rehearsal) — live default** | **93.31%** | **51.39%** | Recovered synthetic performance *and* improved real performance further -- best of all three |
+| Base: synthetic only, 1 box/cell | 98.71% | -- (never tested on real boxes until fine-tuned) | The original OD deliverable |
+| v1: real-only fine-tune, 1 box/cell | not re-tested | 47.71% | Worked on the standard real val split, but only 3-5 detections on two arbitrary real stock photos (way denser/higher-res than any training data) |
+| v2: real + crop augmentation, 1 box/cell, no rehearsal | 6.50% (collapsed) | 49.36% | Augmentation fixed the stress-test photos dramatically, but **catastrophic forgetting**: fine-tuning on real data alone overwrote synthetic performance |
+| v3: synthetic + real + augmentation (rehearsal), 1 box/cell | 93.31% | 51.39% | Recovered synthetic performance *and* improved real performance further -- but still under-detected badly on the densest stress-test photo (17 detections) |
+| **v4: same rehearsal recipe, 3 boxes/cell (adopted) — live default** | **90.60%** | **68.76%** | Directly fixed v3's residual gap: real mAP +17 points, stress-test detections 17→38, by removing the one-box-per-cell recall ceiling itself |
+
+v3's residual gap traced back to the detector's core design, not the
+training recipe: **one predicted box per grid cell**. Real PKLot lots
+average ~57 spots/image against a 16×16 = 256-cell grid, so two spot
+centers sharing a cell forced one to be dropped during training, capping
+recall no matter how the model was fine-tuned. Measuring collision rate
+directly (not assuming) across grid sizes *and* boxes-per-cell counts
+showed 3 boxes/cell at the *same* 16×16 resolution eliminates it entirely:
+
+```
+grid=16, 1 box/cell:  28.25% of real ground-truth boxes dropped to collisions
+grid=16, 2 box/cell:   3.10%
+grid=16, 3 box/cell:   0.00%   <- adopted; cheaper than the finer-grid alternative (32x32 alone: 3.10%)
+```
 
 The zero-shot cross-domain test (115 real CNRPark-EXT photos -- a totally
-different camera angle with no painted lines) is a separate, harder result:
-the detector carries over a coarse "cars are roughly here" signal but does
-not reliably localize per spot or recognize `empty_spot` in that domain,
-even with the adopted checkpoint. Domain transfer needs the model to
-actually see data resembling the target camera; it does not happen for free.
+different camera angle with no painted lines) is a separate, harder result
+that the architecture fix does not address: the detector carries over a
+coarse "cars are roughly here" signal but does not reliably localize per
+spot or recognize `empty_spot` in that domain. Domain transfer needs the
+model to actually see data resembling the target camera; it does not
+happen for free.
 
-Real PKLot lots are ~4x denser than the synthetic dataset (~57 vs. ~15
-spots/image), which pushes the 16x16 grid's one-box-per-cell collision rate
-to 28.2% (vs. 0.27% synthetic) — capping achievable recall near ~72%
-regardless of model quality. Classification itself stays nearly as reliable
-on real data as on synthetic; the real-data gap is concentrated in
-localization recall, not misclassification. See Sections 5.2-5.3 of the
-report for the full story, including the two stress-test photos and the
-before/after images -- this is the single most useful thing to read before
-trusting this on a real deployment.
-
-**Honest residual gap**: the adopted (v3) checkpoint still finds noticeably
-fewer cars than v2 on the single most extreme stress-test photo (17 vs. 54
-detections) -- rehearsal recovered synthetic performance at some cost to
-the very-highest-density case specifically. v3 was still adopted because it
-never catastrophically fails on the project's own primary benchmark, but
-tuning the synthetic:real:augmented mixing ratio further is a real,
-unfinished next step, not a solved problem.
+Classification itself stays reliable throughout (94.8% given correct
+localization, vs. 99.86% synthetic) -- every stage of this journey confirms
+the real-data gap is about *finding* spots in a dense scene, not
+misclassifying them once found. See Sections 5.2-5.4 of the report for the
+full story, including all four before/after stress-test images -- this is
+the single most useful thing to read before trusting this on a real
+deployment.
 
 **Occupancy classifier** (secondary pipeline): 97.5% validation accuracy on
 synthetic crops; **98.69%** on real PKLot data (freshly retrained on the same
@@ -104,21 +113,21 @@ smartpark/
 ├── data/
 │   └── generate_synthetic_data.py   # synthetic detection + classifier dataset
 ├── models/
-│   ├── detector_model.py            # object detector architecture
+│   ├── detector_model.py            # object detector architecture (NUM_BOXES_PER_CELL=3)
 │   └── cnn_model.py                 # occupancy classifier architecture
 ├── api/
 │   └── app.py                       # Flask REST API, serves both pipelines
 ├── demo/
 │   └── park_check.html              # upload demo UI (served at "/")
 ├── train_detector.py                # train/fine-tune the object detector (--resume_from, --augment_crops)
-├── train_detector_mixed.py          # rehearsal fine-tune: synthetic + real + augmented together (live checkpoint)
+├── train_detector_mixed.py          # rehearsal fine-tune: synthetic + real + augmented together (live checkpoint recipe)
 ├── augmentation.py                  # random crop/zoom augmentation (scale/density generalization)
 ├── evaluate_detector.py             # precision/recall/F1/AP/mAP
 ├── hyperparameter_ablation.py       # grid-size + lambda_coord experiments
 ├── benchmark_baseline.py            # baseline comparison
 ├── real_photo_test.py               # zero-shot cross-domain test (CNRPark-EXT)
 ├── streamlit_app.py                 # presentation-friendly demo UI (own venv, see below)
-├── detector_utils.py                # target encoding, loss, decode+NMS, drawing
+├── detector_utils.py                # target encoding, loss, decode+NMS, drawing (multi-box aware)
 ├── train.py                         # train the occupancy classifier
 ├── inference.py                     # classifier + geometry inference pipeline
 ├── improper_parking.py              # IoU/overflow misparking check
@@ -132,9 +141,11 @@ smartpark/
 │   ├── SmartPark_Report.docx
 │   ├── SmartPark_Slides.pptx
 │   ├── sample_outputs/              # 8 synthetic annotated examples + summary.json
-│   ├── sample_outputs_real/         # 8 real PKLot annotated examples + summary.json
+│   ├── sample_outputs_real/         # 8 real PKLot annotated examples (v3) + summary.json
+│   ├── sample_outputs_multibox/     # 8 real PKLot annotated examples (v4, adopted) + summary.json
 │   ├── charts/                      # synthetic-data figures used in the report/slides
-│   ├── charts_real/                 # real-data figures (fine-tuning results)
+│   ├── charts_real/                 # real-data figures (v3 fine-tuning results)
+│   ├── charts_multibox/             # real-data figures (v4 multi-box results, collision-rate chart)
 │   ├── build_report_docx.py         # regenerates the report from these numbers
 │   └── build_slides_pptx.py         # regenerates the slide deck
 └── requirements.txt
@@ -186,19 +197,21 @@ python convert_coco_to_crops.py --images_dir ./pklot_raw/test \
     --annotations ./pklot_raw/test/_annotations.coco.json --out ./real_dataset_v2
 python train.py --dataset ./real_dataset_v2 --epochs 12 --out ./trained_model_real
 
-# 8. (optional, recommended) Fine-tune with rehearsal instead of step 7's
-# real-only fine-tune -- this is the version actually served by the API.
-# Real-only fine-tuning generalizes poorly to arbitrary real photos; fixing
-# that with crop augmentation alone causes catastrophic forgetting of
-# synthetic performance (see Results above) -- rehearsal (mixing synthetic
-# data back into the fine-tune) fixes both at once.
+# 8. (recommended) Fine-tune with rehearsal instead of step 7's real-only
+# fine-tune -- real-only fine-tuning generalizes poorly to arbitrary real
+# photos; fixing that with crop augmentation alone causes catastrophic
+# forgetting of synthetic performance (see Results above). Rehearsal (mixing
+# synthetic data back into the fine-tune) fixes both at once. Because
+# models/detector_model.py now predicts NUM_BOXES_PER_CELL=3 boxes per cell
+# (see below), this step already trains and fine-tunes the current,
+# collision-free architecture -- no separate script needed for that part.
 python train_detector_mixed.py --synthetic_dataset ./synthetic_dataset \
     --real_dataset ./real_pklot_dataset --epochs 25 --augment_crops 4 \
-    --resume_from ./trained_detector/spot_detector.keras --lr 1e-4 --out ./trained_detector_mixed
-python evaluate_detector.py --dataset ./synthetic_dataset --model ./trained_detector_mixed/spot_detector.keras
-python evaluate_detector.py --dataset ./real_pklot_dataset --model ./trained_detector_mixed/spot_detector.keras
+    --resume_from ./trained_detector/spot_detector.keras --lr 1e-4 --out ./trained_detector_multibox_mixed
+python evaluate_detector.py --dataset ./synthetic_dataset --model ./trained_detector_multibox_mixed/spot_detector.keras
+python evaluate_detector.py --dataset ./real_pklot_dataset --model ./trained_detector_multibox_mixed/spot_detector.keras
 
-# 9. Start the API + demo (uses trained_detector_mixed by default)
+# 9. Start the API + demo (uses trained_detector_multibox_mixed by default)
 python api/app.py
 # then open http://localhost:5050 in a browser --
 # drag and drop any photo, or click a sample lot thumbnail
@@ -211,6 +224,15 @@ shared Google Drive link, not a public URL worth hardcoding here -- get your
 own export from Roboflow Universe (search "PKLot") or the original dataset
 page (web.inf.ufpr.br/vri/databases/parking-lot-database), then point the
 conversion scripts at wherever you extract it.
+
+**On the multi-box architecture**: `models/detector_model.py` predicts
+`NUM_BOXES_PER_CELL=3` boxes per grid cell rather than 1, at the same 16x16
+resolution -- this is now the default for every training command above, not
+an opt-in flag. It exists because the one-box-per-cell version measurably
+capped recall on dense real lots (see Results); if you want to reproduce
+the *original* single-box numbers from the report's early sections, set
+`NUM_BOXES_PER_CELL = 1` in that file before training (the target
+encoding/loss/decoding in `detector_utils.py` adapt automatically).
 
 `curl` smoke test while the server is running:
 ```bash
@@ -255,31 +277,24 @@ the numbers to reflect a fresh run.
 
 ## Known limitations
 
-- **Recall on dense real lots is the main open gap, and it's a specific,
-  measured one**: the object detector's one-box-per-cell design drops 28.2%
-  of real PKLot ground-truth boxes to grid-cell collisions (real lots
-  average ~57 spots/image vs. ~15 for the synthetic dataset), capping
-  achievable recall near ~72%. Classification itself is nearly as reliable
-  on real data as synthetic (94.5% vs. 99.86%) — this is a localization
-  capacity problem, not a "needs more data" problem. A finer grid (32x32+)
-  or a multi-box-per-cell/anchor-based head is the concrete next fix.
 - The detector does **not** generalize zero-shot to a genuinely unfamiliar
   camera/marking style (tested on CNRPark-EXT — different angle, no painted
   lines). It needs to see data resembling its deployment camera, which it
   can learn to do quickly (25 epochs) once given real examples, per the
-  PKLot fine-tuning result above.
+  PKLot fine-tuning result above. The multi-box architecture fix does not
+  change this -- it addresses density/scale within a familiar domain, not
+  transfer to a wholly unfamiliar one.
 - **Fine-tuning on real data alone causes catastrophic forgetting**: real
   mAP improved (49.36%) but synthetic mAP collapsed (98.71% → 6.50%). The
   live checkpoint uses rehearsal (mixing synthetic data back into the
   fine-tune) to avoid this — if you retrain further, always re-evaluate on
   the *original* synthetic validation set, not just the new domain, or a
   regression like this can go completely unnoticed.
-- **The adopted (rehearsal) checkpoint still under-performs the
-  augmentation-only variant on the single most extreme real photo tested**
-  (17 vs. 54 detections on a ~150-car dense lot) — rehearsal traded a little
-  of that specific density-robustness back for retaining synthetic
-  performance. Tuning the synthetic:real:augmented mixing ratio is a real,
-  unfinished next step.
+- **Synthetic mAP costs a little more with 3 boxes/cell than with 1**
+  (90.60% vs. 93.31%, both rehearsal-fine-tuned) — a real, small trade-off
+  for the +17-point real-data gain. Tuning the synthetic:real:augmented
+  mixing ratio further, now that architecture is no longer the bottleneck,
+  is the clearest remaining lever.
 - The geometric "properly parked" check and its classic-CV car-localization
   step are validated on synthetic data only; real photos (shadows, dense
   packing) remain untested for that specific feature.
@@ -290,13 +305,10 @@ the numbers to reflect a fresh run.
    `SmartPark_Slides.pptx` have `[FILL IN]` placeholders for group number,
    member names/roles, and the Project Manager. These can't be filled in
    automatically.
-2. **(Optional) Try a finer grid or anchor-based head** — the collision-rate
-   math above points directly at this as the highest-leverage next change
-   for dense real deployments.
-2b. **(Optional) Tune the rehearsal mixing ratio** — `train_detector_mixed.py`
+2. **(Optional) Tune the rehearsal mixing ratio** — `train_detector_mixed.py`
    currently uses all available synthetic + real + augmented data at a fixed
    ratio; weighting real/augmented data more heavily might close the
-   remaining density gap without giving back synthetic performance.
+   remaining synthetic-mAP gap without giving back real-world recall.
 3. **(Optional) Validate on your actual deployment camera** — if you have a
    specific real lot in mind, a handful of photos from it (with spot
    boundaries marked once) would let you fine-tune both pipelines on that

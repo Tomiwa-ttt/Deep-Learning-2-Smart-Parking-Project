@@ -197,9 +197,9 @@ def plot_burndown(out_path):
     Not a per-day Jira burndown -- an honest, coarser retrospective view."""
     stages = ["Sprint 1\n(pipeline +\nsynthetic data)", "Sprint 2\n(real-data\nintegration)",
               "Sprint 3\n(reporting)", "Sprint 4\n(env fixes +\nOD pivot)", "Sprint 5\n(real-data\nclosure)",
-              "Sprint 6\n(stress-test +\nrehearsal fix)"]
-    planned_total = 11
-    remaining = [11, 8, 6, 2, 1, 0]
+              "Sprint 6\n(stress-test +\nrehearsal fix)", "Sprint 7\n(multi-box\narchitecture fix)"]
+    planned_total = 12
+    remaining = [12, 9, 7, 3, 2, 1, 0]
     plt.figure(figsize=(6, 4))
     plt.plot(stages, remaining, marker="o", linewidth=2, color="#3b5bfd")
     plt.fill_between(stages, remaining, alpha=0.15, color="#3b5bfd")

@@ -1,0 +1,8 @@
+Dataset: ./synthetic_dataset
+Resumed from: scratch
+Augment crops per training image: 0
+Images: 300 (train 255 / val 45)
+Ground-truth boxes: 4422 (0 dropped to grid-cell collisions, 0.0%)
+Epochs run: 40
+Final train loss: 1.8238
+Final val loss: 3.1239

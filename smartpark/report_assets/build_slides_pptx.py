@@ -20,6 +20,8 @@ CHARTS = os.path.join(HERE, "charts")
 SAMPLES = os.path.join(HERE, "sample_outputs")
 CHARTS_REAL = os.path.join(HERE, "charts_real")
 SAMPLES_REAL = os.path.join(HERE, "sample_outputs_real")
+CHARTS_MULTIBOX = os.path.join(HERE, "charts_multibox")
+SAMPLES_MULTIBOX = os.path.join(HERE, "sample_outputs_multibox")
 
 BG = RGBColor(0x18, 0x18, 0x1B)
 FG = RGBColor(0xF4, 0xF4, 0xF5)
@@ -321,13 +323,41 @@ def build():
     add_title(s, "Fixing It: Augmentation + Rehearsal", "Three variants, one clear winner")
     add_picture_fit(s, os.path.join(CHARTS_REAL, "finetuning_comparison.png"), Inches(1.0), Inches(1.7), Inches(11.3), Inches(5.3))
 
-    # 13g. Before/after
+    # 13g. Before/after (v3, superseded)
     s = blank_slide(prs)
-    add_title(s, "Before / After", "Same photo, original vs. rehearsal-fine-tuned checkpoint")
+    add_title(s, "Before / After (v3)", "Rehearsal alone — still not the final answer")
     add_picture_fit(s, os.path.join(HERE, "real_photo_test", "before_ivana.jpg"), Inches(0.4), Inches(1.7), Inches(6.2), Inches(5.3))
     add_picture_fit(s, os.path.join(HERE, "real_photo_test", "after_ivana.jpg"), Inches(6.9), Inches(1.7), Inches(6.2), Inches(5.3))
     add_text(s, Inches(0.4), Inches(6.9), Inches(6.2), Inches(0.5), "Before: 3 detections", size=14, color=MUTED, align=PP_ALIGN.CENTER)
-    add_text(s, Inches(6.9), Inches(6.9), Inches(6.2), Inches(0.5), "After (adopted): 17 detections", size=14, color=MUTED, align=PP_ALIGN.CENTER)
+    add_text(s, Inches(6.9), Inches(6.9), Inches(6.2), Inches(0.5), "v3 (single-box rehearsal): 17 detections", size=14, color=MUTED, align=PP_ALIGN.CENTER)
+
+    # 13h. The real fix: multi-box per cell
+    s = blank_slide(prs)
+    add_title(s, "The Real Fix: Multiple Boxes Per Cell", "v3 still under-detected — the cause was structural, not the fine-tune")
+    add_bullets(s, Inches(0.7), Inches(1.9), Inches(11.7), Inches(2.0), [
+        "One box per cell caps recall when 2+ spot centers share a grid cell",
+        "Real PKLot lots average ~57 spots/image against a 16×16 = 256-cell grid",
+        "Measured directly: 3 boxes/cell at the SAME 16×16 grid eliminates collisions (28.25%→0.00%)",
+    ], size=16)
+    add_picture_fit(s, os.path.join(CHARTS_MULTIBOX, "collision_grid_vs_boxes.png"), Inches(2.7), Inches(3.9), Inches(8.0), Inches(3.3))
+
+    # 13i. v3 vs v4 comparison
+    s = blank_slide(prs)
+    add_title(s, "v3 vs. v4: Multi-Box Results", "Same rehearsal recipe, different architecture")
+    add_picture_fit(s, os.path.join(CHARTS_MULTIBOX, "v3_vs_v4_comparison.png"), Inches(1.3), Inches(1.6), Inches(7.5), Inches(5.5))
+    add_bullets(s, Inches(9.1), Inches(2.2), Inches(3.7), Inches(4.5), [
+        "Real mAP: 51.39%→68.76%",
+        "Synthetic mAP: 93.31%→90.60%",
+        "Classification accuracy unchanged (94.8%) — the gain is pure localization capacity",
+    ], size=14)
+
+    # 13j. Final before/after
+    s = blank_slide(prs)
+    add_title(s, "Before / After (v4, Adopted)", "Same dense lot — original vs. multi-box rehearsal checkpoint")
+    add_picture_fit(s, os.path.join(HERE, "real_photo_test", "before_ivana.jpg"), Inches(0.4), Inches(1.7), Inches(6.2), Inches(5.3))
+    add_picture_fit(s, os.path.join(HERE, "real_photo_test", "final_ivana.jpg"), Inches(6.9), Inches(1.7), Inches(6.2), Inches(5.3))
+    add_text(s, Inches(0.4), Inches(6.9), Inches(6.2), Inches(0.5), "Before: 3 detections", size=14, color=MUTED, align=PP_ALIGN.CENTER)
+    add_text(s, Inches(6.9), Inches(6.9), Inches(6.2), Inches(0.5), "v4 (adopted): 38 detections", size=14, color=MUTED, align=PP_ALIGN.CENTER)
 
     # 14. Discussion & limitations
     s = blank_slide(prs)
@@ -338,24 +368,26 @@ def build():
         "caught by auditing against the rubric, requiring a genuine architecture change in Sprint 4",
         "Fine-tuning on real data alone caused catastrophic forgetting (synthetic mAP 98.71%→6.50%) — only "
         "caught by re-testing on the original validation set; rehearsal (mixing synthetic back in) fixed it",
-        "The real-data bottleneck is recall from grid-cell collisions on dense lots, not classification — "
-        "a specific, measured next fix, not a vague call for \"more real data\"",
-    ], size=16)
+        "The real cause of the remaining gap was structural (one-box-per-cell collisions), not a "
+        "fine-tuning problem — measuring collision rate directly pointed straight at moving to 3 "
+        "boxes/cell, which raised real mAP from 51.39% to 68.76%",
+    ], size=15)
 
     # 15. Conclusion
     s = blank_slide(prs)
     add_title(s, "Conclusion")
-    add_text(s, Inches(0.8), Inches(1.9), Inches(11.7), Inches(4.8),
+    add_text(s, Inches(0.8), Inches(1.7), Inches(11.7), Inches(5.2),
               "A from-scratch object detector for two classes (empty_spot / occupied_spot). The live "
-              "checkpoint (rehearsal fine-tuned on synthetic + real together): 93.31% mAP@0.5 synthetic, "
-              "51.39% real — beating a majority-class baseline (53.3%) and this project's own classic-CV "
-              "heuristic (82.7%) by a wide margin. Getting here wasn't a straight line: real-only fine-tuning "
-              "generalized poorly to uncontrolled stress-test photos; augmentation fixed that but caused "
-              "catastrophic forgetting; rehearsal recovered synthetic performance while improving real "
-              "performance further — the best result of every variant tried. Served live through a REST API "
-              "and browser demo, alongside a real-data-validated occupancy classifier (98.69%) for calibrated "
-              "cameras.",
-              size=16, color=FG)
+              "checkpoint (3 boxes/cell, rehearsal fine-tuned on synthetic + real together): 90.60% mAP@0.5 "
+              "synthetic, 68.76% real — beating a majority-class baseline (53.3%) and this project's own "
+              "classic-CV heuristic (82.7%) by a wide margin. Getting here wasn't a straight line: real-only "
+              "fine-tuning generalized poorly to uncontrolled stress-test photos; augmentation fixed that but "
+              "caused catastrophic forgetting; rehearsal recovered synthetic performance but still "
+              "under-detected on the densest photo; measuring the real cause (grid-cell collisions) directly "
+              "led to a multi-box architecture change that closed most of the remaining gap. Served live "
+              "through a REST API and browser demo, alongside a real-data-validated occupancy classifier "
+              "(98.69%) for calibrated cameras.",
+              size=15, color=FG)
 
     # 16. Team
     s = blank_slide(prs)
