@@ -252,9 +252,23 @@ photos with verified strong results) alongside the upload flow.
 1. Push this repo to GitHub (already done if you're reading this from there).
 2. Go to [share.streamlit.io](https://share.streamlit.io), sign in, "New app".
 3. Repo: this one. Branch: `main`. Main file path: `smartpark/streamlit_app.py`.
-4. Advanced settings → Python dependencies file: `smartpark/requirements_streamlit_cloud.txt`.
-5. Deploy. First load will be slow (~a few minutes) while it installs
-   TensorFlow and downloads the model files from the repo.
+4. Deploy. `requirements.txt` and `.python-version` (both in `smartpark/`,
+   next to the entrypoint) are auto-detected -- no advanced settings needed.
+   First load will be slow (~a few minutes) while it installs TensorFlow and
+   downloads the model files from the repo.
+
+Two real deploy failures already hit and fixed here, worth knowing if a
+future change reintroduces them:
+- **Wrong requirements file picked up**: Streamlit Cloud auto-detects
+  `requirements.txt` in the *same folder as the entrypoint script*, not a
+  differently-named file -- an earlier attempt at a separate
+  `requirements_streamlit_cloud.txt` was silently ignored in favor of the
+  original Flask-oriented `requirements.txt` (which still had
+  `tensorflow-cpu`, no Linux wheels under the environment's Python version).
+  Fixed by making `smartpark/requirements.txt` itself deploy-ready.
+- **Python version too new**: with no version pinned, Streamlit Cloud
+  defaulted to Python 3.14, for which TensorFlow has no wheels at all yet.
+  Fixed with `smartpark/.python-version` pinning 3.11.
 
 **Local note**: TensorFlow + Streamlit installed together broke TensorFlow
 on this specific machine (a macOS-only native library conflict --
@@ -267,7 +281,7 @@ anyway, try a fresh venv:
 ```bash
 python3 -m venv .venv_streamlit_standalone
 source .venv_streamlit_standalone/bin/activate
-pip install -r requirements_streamlit_cloud.txt
+pip install -r requirements.txt
 streamlit run streamlit_app.py
 ```
 If that reproduces the same crash on your machine, fall back to running

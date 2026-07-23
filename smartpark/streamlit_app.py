@@ -15,7 +15,7 @@ which is a much safer path to the same combination -- so this version
 takes that route to get a single, publicly-deployable app.
 
 Run locally (in a fresh venv, separate from .venv/.venv_streamlit):
-    pip install -r requirements_streamlit_cloud.txt
+    pip install -r requirements.txt
     streamlit run streamlit_app.py
 """
 
