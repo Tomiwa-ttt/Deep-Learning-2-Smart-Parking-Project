@@ -1,5 +1,6 @@
 .venv/
 .venv_streamlit/
+.venv_streamlit_standalone/
 __pycache__/
 *.pyc
 .DS_Store

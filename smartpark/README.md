@@ -40,7 +40,7 @@ This README is the practical "how to run it" companion.
 | Full inference pipeline (classifier path) | `inference.py` | ✅ image + video support |
 | REST API | `api/app.py` | ✅ serves both pipelines live |
 | Upload demo UI | `demo/park_check.html` | ✅ drag-and-drop photo upload, live detection |
-| Streamlit demo | `streamlit_app.py` | ✅ same demo, presentation-friendly UI, runs in its own venv |
+| Streamlit demo | `streamlit_app.py` | ✅ standalone (loads models directly), deployable to Streamlit Community Cloud |
 
 ## Results
 
@@ -240,30 +240,39 @@ curl http://localhost:5050/api/health
 curl -F "image=@synthetic_dataset/full_lots/lot_0000.jpg" http://localhost:5050/api/analyze
 ```
 
-## Streamlit demo (presentation-friendly)
+## Streamlit demo (presentation-friendly, deployable)
 
-`streamlit_app.py` is the same demo with a nicer UI for presenting live --
-tabs, metrics, a results table. It's a pure HTTP client of the Flask API
-above (it never imports TensorFlow itself), and **must run in its own,
-separate virtual environment**:
+`streamlit_app.py` is a standalone demo -- it loads both models directly
+(no separate Flask process needed), so it can run locally or be deployed
+as a single app to Streamlit Community Cloud for a public link. It
+includes one-click "showcase" buttons (`demo_showcase/`, four real PKLot
+photos with verified strong results) alongside the upload flow.
 
+**Deploying to Streamlit Community Cloud** (free, from this GitHub repo):
+1. Push this repo to GitHub (already done if you're reading this from there).
+2. Go to [share.streamlit.io](https://share.streamlit.io), sign in, "New app".
+3. Repo: this one. Branch: `main`. Main file path: `smartpark/streamlit_app.py`.
+4. Advanced settings → Python dependencies file: `smartpark/requirements_streamlit_cloud.txt`.
+5. Deploy. First load will be slow (~a few minutes) while it installs
+   TensorFlow and downloads the model files from the repo.
+
+**Local note**: TensorFlow + Streamlit installed together broke TensorFlow
+on this specific machine (a macOS-only native library conflict --
+confirmed reproducible even with a completely fresh install, not just an
+upgrade-in-place issue). Streamlit Cloud's Linux containers are a
+different environment where this may well not occur, but that also means
+this specific app **could not be verified locally** before deploying --
+the real test happens at deploy time. If you want to run it locally
+anyway, try a fresh venv:
 ```bash
-# one-time setup, in a second terminal
-python3 -m venv .venv_streamlit
-source .venv_streamlit/bin/activate
-pip install streamlit requests
-
-# each time (with api/app.py already running in the *other* venv/terminal)
-source .venv_streamlit/bin/activate
+python3 -m venv .venv_streamlit_standalone
+source .venv_streamlit_standalone/bin/activate
+pip install -r requirements_streamlit_cloud.txt
 streamlit run streamlit_app.py
 ```
-
-Do **not** `pip install streamlit` into the main `.venv` -- in this
-environment it upgrades a shared native dependency in a way that breaks
-TensorFlow for every process using that venv, not just ones that import
-streamlit (we hit this directly: it took down the Flask API too, and
-required rebuilding `.venv` from scratch to fix). Two separate venvs
-talking over HTTP avoids the conflict entirely.
+If that reproduces the same crash on your machine, fall back to running
+`api/app.py` (main `.venv`) and using `demo/park_check.html` instead, which
+has no such conflict since it's plain HTML/JS talking to Flask.
 
 ## Regenerating the report/slides
 
